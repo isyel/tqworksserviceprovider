@@ -1,0 +1,7 @@
+{
+  "name": "TQWorksArtisan",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
