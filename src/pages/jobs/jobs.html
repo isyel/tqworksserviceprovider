@@ -1,0 +1,108 @@
+<!--
+  Generated template for the JobsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Jobs</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content speaker-list" >
+  <!-- <ion-item *ngIf="currentJobAlert && currentJobAlert.accepted">
+    <button ion-item small color="secondary" icon-start text-center round class="get-direction"
+            (click)="startNavigating(currentJobAlert.latitude, currentJobAlert.longitude)">
+      <ion-icon name='return-right'></ion-icon>
+      Get Directions
+    </button>
+  </ion-item> -->
+  <div id="map_canvas" *ngIf="currentJobAlert && currentJobAlert.serviceProviderId != null"></div>
+  <div *ngIf="loading && !currentJobAlert" text-center>
+    <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+    <div align="center">Loading Job Alert...</div>
+  </div>
+  <div  id="over_map">
+    <div *ngIf="currentJobAlert">
+      <ion-card class="speaker-card" text-center align-items-center>
+        <ion-card-header padding-top *ngIf="jobAlertUser">
+          <button ion-item detail-none align-items-center text-center align-self-center justify-content-center 
+          (click)="(currentJobAlert.commitmentFeeDebited && !currentJobAlert.fullPaymentDebited && 
+            currentJobAlert.status != projectStatusEnum.cancelled) ? goToUserDetail(jobAlertUser) : ''">
+            <img src="{{jobAlertUser.profilePhoto ? jobAlertUser.profilePhoto : 'assets/img/customimages/no_avatar.svg'}}" 
+            alt="user" onerror="this.src='assets/img/customimages/no_avatar.svg'">
+            {{jobAlertUser.firstName}}
+          </button>
+        </ion-card-header>
+
+        <ion-card-content class="outer-content" *ngIf="categoryDetails">
+          <ion-list>
+            <button ion-item text-center (click)="goToJobDetail(currentJobAlert)">
+              <p>Looking For {{categoryDetails.name}} Service
+                <br>Around {{currentJobAlert.location}}
+              </p>
+            </button>
+          </ion-list>
+        </ion-card-content>
+
+        <ion-row no-padding>
+          <ion-col col-12 col-lg-auto text-center text-lg-right>
+            <ion-buttons *ngIf="!currentJobAlert.accepted && 
+              currentJobAlert.status != projectStatusEnum.cancelled">
+              <button ion-button clear small color="primary" (click)="acceptJob(currentJobAlert.id)">
+                <h5>TAP TO ACCEPT</h5>
+              </button>
+              <button ion-button clear small color="primary" (click)="rejectJob(currentJobAlert.id)">
+                <h5>NO THANKS</h5>
+              </button>
+            </ion-buttons>
+            <button *ngIf="currentJobAlert.accepted && currentJobAlert.commitmentFeeDebited  && 
+              !currentJobAlert.fullPaymentDebited && currentJobAlert.status != projectStatusEnum.cancelled && 
+              currentJobAlert.status != projectStatusEnum.completed && 
+              this.providerData.id == currentJobAlert.serviceProviderId" ion-button clear small color="primary" 
+              icon-start (click)="openContact(jobAlertUser)">
+              <ion-icon name='chatboxes'></ion-icon>
+              Contact
+            </button>
+            <div *ngIf="currentJobAlert.status == projectStatusEnum.cancelled" text-center padding-bottom>
+              <span class="red-span">Project was cancelled</span>
+            </div>
+            <div *ngIf="currentJobAlert.status == (projectStatusEnum.completed || projectStatusEnum.closed) &&
+              this.providerData.id == currentJobAlert.serviceProviderId" 
+              text-center>
+              <span class="green-span">Job Completed</span>
+            </div>
+            <div *ngIf="currentJobAlert.serviceProviderId != null && 
+              this.providerData.id != currentJobAlert.serviceProviderId &&
+              currentJobAlert.status != projectStatusEnum.cancelled" 
+              text-center>
+              <span class="red-span">Job accepted by a different provider</span>
+            </div>
+            <div *ngIf="!currentJobAlert.commitmentFeeDebited && currentJobAlert.accepted &&
+                          currentJobAlert.status != projectStatusEnum.cancelled && 
+                          this.providerData.id == currentJobAlert.serviceProviderId" text-center>
+              <span (click)="goToJobDetail(currentJobAlert)" class="orange-span">View Job Details</span>
+            </div>
+          </ion-col>
+        </ion-row>
+        <br/>
+      </ion-card>
+    </div>
+
+    <div *ngIf="!currentJobAlert && !loading">
+      <ion-card class="alert-card">
+        <ion-card-content text-center>
+          <div class="info">
+            <ion-icon name='warning'></ion-icon>
+          </div>
+          <h2>Job Not Available  At The Moment</h2>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>
+

@@ -1,0 +1,38 @@
+<ion-header>
+
+	<ion-navbar>
+		<button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+		<ion-title>Support</ion-title>
+	</ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-row padding class="header" text-center>
+    <ion-col>
+      <h3><ion-icon name="mail"></ion-icon> support@tqworks.com</h3>
+      <h3><ion-icon name="call"></ion-icon> 08068952256</h3>
+    </ion-col>
+  </ion-row>
+
+	<form #submitForm="ngForm" novalidate (ngSubmit)="submit(submitForm)">
+		<ion-list no-lines>
+			<ion-item>
+				<ion-label stacked color="primary">
+          For Bug report and other support, Enter your request here to contact us
+        </ion-label>
+				<ion-textarea [(ngModel)]="supportMessage" name="supportQuestion" #supportQuestion="ngModel" rows="6" required></ion-textarea>
+			</ion-item>
+		</ion-list>
+
+		<p ion-text [hidden]="supportQuestion.valid || submitted === false" color="danger" padding-left>
+			Support message is required
+		</p>
+
+		<div padding>
+			<button ion-button block type="submit">Submit</button>
+		</div>
+	</form>
+</ion-content>

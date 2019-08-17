@@ -1,0 +1,71 @@
+<ion-content no-auto-scroll padding>
+  <div class="login-container form-cover">
+    <img class="logo" src="./assets/img/tqworks_logo.png" />
+
+    <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" *ngIf="!showPasswordRecovery" novalidate>
+      <ion-item>
+        <ion-input [(ngModel)]="loginData.username" name="username" type="number" #username="ngModel"
+                     placeholder="Mobile Number" required>
+        </ion-input>
+        <p ion-text [hidden]="username.valid || !username.touched" color="danger" padding-left>
+          <span  *ngIf="username.hasError('required')">Mobile Number is required</span>
+          <span  *ngIf="username.errors?.pattern">Invalid Mobile Number</span>
+        </p>
+      </ion-item>
+      <div class="divider"></div>
+
+      <ion-item>
+        <ion-input minlength="4" placeholder="Password" [(ngModel)]="loginData.password" name="password" 
+            type="password" #password="ngModel" clearOnEdit="false" required>
+        </ion-input>
+        <p ion-text [hidden]="password.valid || !password.touched" color="danger" padding-left>
+          <span *ngIf="password.hasError('required')">Password is required</span>
+          <span *ngIf="password.hasError('minlength')">Password must be at least 4 characters long.</span>
+        </p>
+      </ion-item>
+
+      <ion-row responsive-sm>
+        <ion-col>
+          <button ion-button [disabled]="!loginForm.valid" type="submit" block>Login</button>
+        </ion-col>
+      </ion-row>
+      <p>
+        <strong align-items-center>Don't Have an Account? Contact TQWorks Admin to Register</strong>
+      </p>
+    </form>
+
+    <form #passwordForm="ngForm" *ngIf="showPasswordRecovery" novalidate>
+      <h5>Your Password Reset Token Will Be Sent To Your Mobile Number</h5>
+      <ion-list>
+        <ion-item class="form-with-icons">
+          <ion-input placeholder="Your Mobile Number" [(ngModel)]="recoverPassword.phoneNumber" name="PhoneNumber" type="number"
+                     #PhoneNumber="ngModel" spellcheck="false" autocapitalize="off" 
+                     required>
+          </ion-input>
+        </ion-item>
+        <div [hidden]="PhoneNumber.valid || !PhoneNumber.touched">
+          <p ion-text [hidden]="PhoneNumber.valid || submitted == false" color="danger" padding-left>
+            Mobile Number is required
+          </p>
+        </div>
+      </ion-list>
+      <ion-row responsive-sm reset>
+        <ion-col>
+          <button ion-button (click)="onSubmitPasswordRecovery(passwordForm)" type="submit" block>Reset Password</button>
+        </ion-col>
+      </ion-row>
+      <ion-row responsive-sm reset align-items-center>
+        <ion-col>
+          <h5><a (tap)="createNewPassword()" class="signin" >I Have a Reset Code</a></h5>
+        </ion-col>
+      </ion-row>
+      
+    </form>
+
+    
+  </div>
+
+</ion-content>
+<ion-footer>
+  <button class="bottom" ion-button  mode="ios" type="button"  clear full color="light" (click)="forgotPassword()">{{showPasswordRecovery ? 'Back to Login' : 'Forgot your password?'}}</button>
+</ion-footer>

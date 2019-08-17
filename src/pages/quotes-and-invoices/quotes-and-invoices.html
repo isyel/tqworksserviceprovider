@@ -1,0 +1,178 @@
+<!--
+  Generated template for the EnquiriesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="hello1">
+  <ion-navbar color="blue2" style="background: none; border-bottom: none">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Quotes And Invoices</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only class="notification-button" (click)='goToNotifications($event)'>
+        <ion-icon name="notifications">
+            <ion-badge *ngIf="this._userData.getNotificationCount() > 0" id="notifications-badge" color="danger">{{this._userData.getNotificationCount()}}</ion-badge>
+        </ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <!--***********  Segement tab ***********-->
+  <ion-segment sticky mode="md" [(ngModel)]="segmentView" color="primary">
+    <ion-segment-button value="one">
+      All
+      <ion-badge *ngIf="allQuotes.length > 0">{{allQuotes.length}}</ion-badge>
+    </ion-segment-button>
+    <ion-segment-button value="two">
+      Approved
+      <ion-badge *ngIf="approvedQuotes.length > 0">{{approvedQuotes ? approvedQuotes.length : ''}}</ion-badge>
+    </ion-segment-button>
+    <ion-segment-button value="three">
+      Pending
+      <ion-badge *ngIf="pendingQuotes.length > 0">{{pendingQuotes ? pendingQuotes.length : ''}}</ion-badge>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!--***********    Segement one  ***********-->
+
+  <div class="background" *ngIf="segmentView==='one'" >
+    <div *ngIf="loading  && (allQuotes == null || allQuotes.length == 0)" text-center>
+      <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+      <p>Loading Quotes...</p>
+    </div>
+
+    <div text-center padding *ngIf="allQuotes.length === 0 && !loading">
+      <div class="dummy" text-center margin-top padding-top>
+        <ion-icon name="paper" ></ion-icon>
+      </div>
+      <strong>NO JOB QUOTES</strong><br>
+      <p>You can see all your job quotes here, after you submit a quote for a job</p>
+      <button ion-item color="primary" text-center small (click)="findJobs()">
+        Go To Jobs
+      </button>
+    </div>
+
+    <ion-card no-padding maxiwidth *ngFor="let quote of allQuotes">
+      <a (click)="goToQuoteDetail(quote)">
+        <ion-card-content>
+          <ion-item no-padding no-lines>
+            <!--<strong>{{getServiceRequestUser(quote.serviceRequest.userId)}}</strong>-->
+            Total : &#8358; <strong>{{quote.totalAmount - quote.processingFee}}</strong>
+            <span item-end>{{quote.createdDate | relativeTime}}</span>
+          </ion-item>
+          <ion-item no-padding no-lines >
+            <p>{{quote.serviceRequest.description | slice:0:35}}[..]</p>
+            <ion-icon *ngIf="!quote.isRejected" item-end color="{{quote.isApproved ? 'secondary' : 'danger' }}"
+                      name="{{quote.isApproved ? 'done-all' : 'timer' }}"></ion-icon>
+            <ion-icon *ngIf="quote.isRejected" item-end color="danger"
+                      name="close"></ion-icon>
+          </ion-item>
+        </ion-card-content>
+      </a>
+    </ion-card>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+  <!--***********  Segment two  ***********-->
+  <div class="background" *ngIf="segmentView==='two'">
+    <div *ngIf="loading && (approvedQuotes == null || approvedQuotes.length == 0)" text-center>
+      <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+      <p>Loading Quotes...</p>
+    </div>
+
+    <div text-center padding *ngIf="approvedQuotes.length === 0 && !loading">
+      <div class="dummy" text-center margin-top padding-top>
+        <ion-icon name="paper" ></ion-icon>
+      </div>
+      <strong>NO APPROVED QUOTES</strong><br>
+      <p>You have no approved quotes at the moment</p>
+      <button ion-item color="primary" text-center small (click)="findJobs()">
+          Go To Jobs
+      </button>
+    </div>
+
+    <ion-card no-padding maxiwidth *ngFor="let quote of approvedQuotes">
+      <a (click)="goToQuoteDetail(quote)">
+        <ion-card-content>
+          <ion-item no-padding no-lines>
+            <!--<strong>{{getServiceRequestUser(quote.serviceRequest.userId)}}</strong>-->
+            Total : &#8358; <strong>{{quote.totalAmount - quote.processingFee}}</strong>
+            <span item-end>{{quote.createdDate | relativeTime}}</span>
+          </ion-item>
+          <ion-item no-padding no-lines>
+            <p>{{quote.serviceRequest.description | slice:0:35}}[..]</p>
+            <ion-icon item-end color="{{quote.isApproved ? 'secondary' : 'danger' }}"
+                      name="{{quote.isApproved ? 'done-all' : 'timer' }}"></ion-icon>
+          </ion-item>
+        </ion-card-content>
+      </a>
+    </ion-card>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+  </div>
+
+  <!--***********  Segment three  ***********-->
+  <div class="background" *ngIf="segmentView==='three'">
+    <div *ngIf="loading && (pendingQuotes == null || pendingQuotes.length == 0)" text-center>
+      <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+      <p>Loading Quotes...</p>
+    </div>
+
+    <div text-center padding *ngIf="pendingQuotes.length === 0 && !loading">
+      <div class="dummy" text-center margin-top padding-top>
+        <ion-icon name="paper" ></ion-icon>
+      </div>
+      <strong>NO AVAILABLE PENDING QUOTES</strong><br>
+      <p>You haven't submitted any quotes yet or your submitted quotes have all been approved</p>
+      <button ion-item color="primary" text-center small (click)="findJobs()">
+          Go To Jobs
+      </button>
+    </div>
+
+    <ion-card no-padding maxiwidth *ngFor="let quote of pendingQuotes">
+      <a (click)="goToQuoteDetail(quote)">
+        <ion-card-content>
+          <ion-item no-padding no-lines>
+            <!--<strong>{{getServiceRequestUser(quote.serviceRequest.userId)}}</strong>-->
+            Total : &#8358; <strong>{{quote.totalAmount - quote.processingFee}}</strong>
+            <span item-end>{{quote.createdDate | relativeTime}}</span>
+          </ion-item>
+          <ion-item no-padding no-lines>
+            <p>{{quote.serviceRequest.description | slice:0:35}}[..]</p>
+            <ion-icon *ngIf="!quote.isRejected" item-end color="{{quote.isApproved ? 'secondary' : 'danger' }}"
+                      name="{{quote.isApproved ? 'done-all' : 'timer' }}"></ion-icon>
+            <ion-icon *ngIf="quote.isRejected" item-end color="danger"
+                      name="close"></ion-icon>
+          </ion-item>
+        </ion-card-content>
+      </a>
+    </ion-card>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</ion-content>

@@ -1,0 +1,114 @@
+page-jobs {
+
+
+  ion-content {
+    background-size: auto auto;
+    background-repeat: repeat;
+    ion-item {
+      .get-direction {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 99;
+      }
+    }
+  }
+
+  .speaker-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 13px;
+
+    ion-card-header {
+      padding: 2px;
+      button {
+        padding: 1px 16px !important;
+      }
+
+      img {
+        display: block;
+        width: 16%;
+        border-radius: 11px;
+        margin: auto;
+      }
+    }
+
+    .label-md {
+      margin: 1px 8px 7px 0;
+    }
+
+    ion-card-content {
+      padding: 0px 12px !important;
+      flex: 1 1 auto;
+      .info {
+        font-size: 90px !important;
+        ion-icon {
+          font-size: 3.9em !important;
+        }
+      }
+    }
+
+    .alert-card {
+      background-color: red;
+      ion-card-content {
+        .info {
+          font-size: 50px !important;
+          ion-icon {
+            font-size: 3.9em !important;
+          }
+        }
+      }
+    }
+  }
+
+  .hiddenJob {
+    display: none;
+  }
+
+  .scroll {
+    height: 100%
+  }
+
+  #map_canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  ion-card.direction_panel {
+    max-height: 200px;
+    overflow: scroll;
+    position: absolute;
+    z-index: 1;
+  }
+
+  // Todo: remove when this issue https://github.com/ionic-team/ionic/issues/11212 is fixed
+  @media(min-width: 769px) {
+    .speaker-card {
+      height: 370px;
+    }
+  }
+
+  .speaker-card ion-card-header .item {
+    padding: 4px 16px;
+  }
+
+  .speaker-card ion-card-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #over_map {
+    position: absolute;
+    bottom: -1%;
+    left: 0;
+    z-index: 99;
+    width: 100%;
+  }
+
+  
+  .scroll-content {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%,rgba(255,255,255,0.7) 100%), url(../assets/img/tq_background.png) repeat 0 0;
+  }
+
+}

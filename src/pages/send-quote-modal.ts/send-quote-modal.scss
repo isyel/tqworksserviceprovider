@@ -1,0 +1,55 @@
+page-send-quote-modal {
+    ion-item {
+        button[item-end] {
+            width: 60%;
+            border-radius: 50px;
+            ion-icon[name='arrow-forward'] {
+                font-size: 1.9em !important;
+            }
+        }
+
+        .add-item {
+            width: 70px !important;
+        }
+    }
+
+    ion-icon[color='danger'] {
+        font-size:  1.73em !important;
+    }
+
+    ion-icon[name='add-circle'] {
+        font-size:  1.73em;
+    }
+
+    h3 {
+        font-size: medium !important;
+    }
+
+    h4 {
+        margin-top: 0rem;
+        margin-bottom: 0rem;
+    }
+
+    ion-item-sliding {
+        padding-top: 3px;
+        ion-item {
+            .item-inner {
+                padding-right: 1px !important;
+                ion-label {
+                    margin: 1px 0px 5px 0;
+                    h2 {
+                        font-size: 1.9rem !important;
+                        padding-left: 5px;
+                    }
+                
+                    h5 {
+                        font-size: 1.3rem !important;
+                    }
+                }
+            }
+            padding-left: 0px !important;
+            border-bottom: 0.55px solid #c8c7cc !important;
+        }
+    }
+    
+}

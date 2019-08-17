@@ -1,0 +1,80 @@
+$categories: (
+ fixing: color($colors, primary),
+ electricals: #AC282B,
+ delivery: #8E8D93,
+ carpentry: #FE4C52,
+ painting: #FD8B2D,
+ design: #FED035,
+ tutorial: #69BB7B,
+ cooking: #3BC7C4,
+ documentation: #B16BE3,
+ plumbing: #6600CC,
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+page-projects {
+  @each $track, $value in auxiliary-categories() {
+   ion-item-sliding[track=#{$track}] ion-label {
+     border-left: 2px solid $value;
+     padding-left: 10px;
+   }
+  }
+  /*ion-segment {
+    background-color: color($colors, primary);
+  }*/
+
+  .searchbar-input {
+    border-radius: 11px !important;
+  }
+
+  ion-card {
+
+    ion-item {
+      background-color: #dedede !important;
+    }
+
+    ion-item.hours-header {
+      font-size: xx-large !important;
+    }
+
+    .green-text {
+      color: green;
+    }
+
+    .red-text {
+      color: red;
+    }
+
+    .danger {
+      color: red !important;
+    }
+
+    h6 {
+      font-size: 1.6rem !important;
+    }
+  }
+
+  .background {
+    background-size: auto auto;
+    background-repeat: repeat;
+  }
+
+  .over-image-text {
+    margin: auto;
+    left: 90px;
+    width: 70%;
+    button[color='primary'] {
+      color: #ffffff;
+      border-radius: 50px;
+      margin: auto;
+      width: 65%;
+    }
+  }
+
+  .scroll-content {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%,rgba(255,255,255,0.7) 100%), url(../assets/img/tq_background.png) repeat 0 0;
+  }
+}

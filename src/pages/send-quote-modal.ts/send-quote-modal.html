@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Send Quote
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #bidQuote="ngForm" novalidate>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label floating>Labour Cost(&#8358;)</ion-label>
+          <ion-input type="number" name="labour_cost"
+                      [(ngModel)]="quote.labourCost" #labour_cost="ngModel" (blur)="calculateCost()" required></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label floating>Transportation(&#8358;)</ion-label>
+          <ion-input type="number" name="transportation"
+                      [(ngModel)]="quote.transportation" #transportation="ngModel" (blur)="calculateCost()"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <div *ngIf="quote.items.length > 0 || quote.newItems.length > 0" padding-horizontal>
+      <h3>Items List</h3>
+      <ion-list>
+        <ion-item-sliding #slidingItem *ngFor="let item of quote.items">
+          <ion-item>
+            <h2><strong>{{item.name}}</strong></h2>
+            <ion-row >
+              <ion-col>
+                <h5>Unit Cost</h5>
+                <div>&#8358;{{item.unitCost}}</div>
+              </ion-col>
+              <ion-col>
+                <h5>Quantity</h5>
+                <div>x{{item.quantity}}</div>
+              </ion-col>
+              <ion-col>
+                <h5>Total</h5>
+                <div><strong>&#8358;{{item.totalAmount}}</strong></div>
+              </ion-col>
+              <ion-col col-1>
+                <a (click)="removeItem(item)">
+                  <ion-icon name='close-circle' color='danger'></ion-icon>
+                </a>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+          
+          <ion-item-options icon-start (ionSwipe)="removeItem(item)">
+            <button color="danger" ion-button expandable (click)="removeItem(item)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+        <ion-item-sliding #slidingItem *ngFor="let item of quote.newItems">
+          <ion-item>
+            <h2><strong>{{item.name}}</strong></h2>
+            <ion-row >
+              <ion-col>
+                <h5>Unit Cost</h5>
+                <div>&#8358;{{item.unitCost}}</div>
+              </ion-col>
+              <ion-col>
+                <h5>Quantity</h5>
+                <div>x{{item.quantity}}</div>
+              </ion-col>
+              <ion-col>
+                <h5>Total</h5>
+                <div><strong>&#8358;{{item.totalAmount}}</strong></div>
+              </ion-col>
+              <ion-col col-1>
+                <a (click)="removeNewItem(item)">
+                  <ion-icon name='close-circle' color='danger'></ion-icon>
+                </a>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+          <ion-item-options icon-start (ionSwipe)="removeNewItem(item)">
+            <button color="danger" ion-button expandable (click)="removeNewItem(item)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+    <button ion-item (click)='showItemPopover($event)'>
+      <ion-row>
+        <ion-col>
+          Add {{quote.newItems.length > 0 || quote.items.length > 0 ? 'more' : ''}} item to quote
+        </ion-col>
+        <ion-col col-1>
+          <a class='add-item' >
+            <ion-icon align-items-right color="primary" name='add-circle'></ion-icon>
+          </a>
+        </ion-col>
+      </ion-row>
+    </button>
+
+    <ion-item no-lines>
+      <div align="right">
+        <h5>Total Items Cost</h5>
+        <h2><strong>&#8358;{{quote.itemTotalAmount}}</strong></h2>
+      </div>
+    </ion-item>
+    <ion-item>
+      <div align="right">
+        <h5>Sub-Total</h5>
+        <h2><strong>&#8358;{{quote.totalAmount}}</strong></h2>
+      </div>
+    </ion-item>
+    
+    <ion-item >
+      <ion-label floating>Note</ion-label>
+      <ion-textarea name="note"
+                    [(ngModel)]="quote.note" #note="ngModel"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <button ion-item color="primary" rounded text-center [disabled]="!bidQuote.valid"
+      (click)='submitQuote(bidQuote)'>{{quoteId == null ? 'Send Quote' : 'Re-Send Quote'}}</button>
+    </ion-item>
+  </form>
+
+</ion-content>

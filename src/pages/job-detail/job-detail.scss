@@ -1,0 +1,81 @@
+page-job-detail {
+  .grayed {
+    background-color: rgba(102, 103, 103, 0.47) !important;
+    width: 39px;
+    height: 39px;
+    box-shadow: none;
+  }
+
+  ion-card.main-card {
+    width: 100% !important;
+    margin: 0 !important;
+    background: color($colors, primary) !important;
+    
+    ion-card-header {
+      font-size: large !important;
+    }
+
+    ion-buttons.contact {
+      button {
+        font-size: 1.8rem !important;
+        padding: 0 0.4em !important;
+      }
+    }
+
+    h5 {
+      color: rgb(187, 187, 187) !important;
+      font-size: medium !important;
+    }
+
+    h3, h2, h4 {
+      color: white !important;
+    }
+    
+    .category {
+      font-size: 1.8rem !important;
+    }
+
+    p {
+      color: white;
+      font-size: 1.6rem !important;
+    }
+
+    .green-text {
+      color: #11e404;
+    }
+
+    .danger-text {
+      color: #ff79a4;
+    }
+
+    ion-card {
+      color: black !important;
+      width: 100% !important;
+      h3, h2 {
+        color: black !important;
+      }
+  
+      p {
+        color: black !important;
+        font-size: 1.6rem !important;
+      }
+    }
+  }
+
+  .over-image {
+    padding-top: 2% !important;
+  }
+
+  button {
+    ion-icon {
+      font-size: 1.8em !important;
+    }
+  }
+}
+
+ion-modal.inset-modal {
+  // transparent black background overlay
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+  padding: 20vh 10vw;
+}

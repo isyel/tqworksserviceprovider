@@ -1,0 +1,175 @@
+<!--
+  Generated template for the DashboardPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+  <ion-navbar color="blue2" style="background: none; border-bottom: none" >
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Dashboard</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only class="notification-button" (click)='goToNotifications($event)'>
+        <ion-icon name="notifications">
+            <ion-badge *ngIf="this._userData.getNotificationCount() > 0" id="notifications-badge" color="danger">
+              {{this._userData.getNotificationCount()}}
+            </ion-badge>
+        </ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding>
+  <ion-row padding class="banner rounded-bottom" *ngIf="userData">
+    <ion-col col-3 >
+      <a (click)="goToPerformancePage()" *ngIf="providerData">
+        <ion-avatar class="avatar">
+          <img src="{{providerData.photograph ? providerData.photograph : 'assets/img/customimages/no_avatar.svg'}}" 
+          alt="assets/img/customimages/no_avatar.svg" onerror="this.src='assets/img/customimages/no_avatar.svg'">
+        </ion-avatar>
+      </a>
+    </ion-col>
+    <ion-col col-9 *ngIf="providerData">
+      <div class="profile-details">
+        <h4 no-margin><a (click)="goToPerformancePage()">{{providerData.firstName}} {{providerData.lastName}}</a></h4>
+        <ul no-margin>
+          <li no-margin *ngFor="let category of providerData.categories">{{category.name}}</li>
+        </ul>
+        <a (click)="changeStatus()" *ngIf="availabilityText != ''">
+          <p class="info">
+            <span 
+              class="{{(availabilityText == 'Available') || (availabilityText == 'On a Job') ? 'green-span' : 'red-span'}}">
+              {{availabilityText}}
+            </span>
+          </p>
+        </a>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="userData">
+    <ion-row *ngIf="jobAlert">
+      <ion-col no-padding *ngIf="!jobAlert.accepted">
+        <a (click)="goToJobsPage()">
+          <ion-card padding no-padding >
+            <ion-card-content text-center no-padding>
+              <ion-row>
+                <ion-col>
+                  <h3><strong>Notifications</strong></h3><br>
+                </ion-col>
+              </ion-row>
+              <h3 class="alert">
+                <ion-icon name="information-circle"></ion-icon> {{(jobAlert) ? "You Have A New" : "No"}} Job Alert
+              </h3>
+            </ion-card-content>
+          </ion-card>
+        </a>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col no-padding>
+          <ion-item no-lines *ngIf="activeJob" class="recent-title">
+            <ion-icon item-left name="flash" class="activity-icon"></ion-icon>
+            <h2><strong>Active Job</strong></h2>
+          </ion-item>
+          <ion-card padding >
+            <ion-card-content no-padding>
+              <div *ngIf="loading && !activeJob" text-center>
+                <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+                <div text-center>Loading Active Job</div>
+              </div>
+              <ion-row>
+                <ion-col *ngIf="!loading && !activeJob" text-center>
+                  <h2><strong>No Active Project</strong></h2><br>
+                </ion-col>
+                <ion-col *ngIf="activeJob" text-center>
+                  <a  (click)="goToDetailsPage(activeJob)">
+                    <ion-row>
+                      <ion-col item-left>
+                        <div text-left>
+                          <p>{{activeJob.acceptedDate | relativeTime}}</p>
+                        </div>
+                      </ion-col>
+                      <ion-col col-auto>
+                        <div text-right>
+                          <span class="{{activeJob.isApproved ? 'green-span' : 'orange-span'}}">
+                              {{showProjectStatus(activeJob.status)}}
+                          </span>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col text-left>
+                        <p class='job-details'>
+                          {{activeJob.description | slice: 0 : 35}}[..]<br>
+                        </p>
+                      </ion-col>
+                      <ion-col col-5>
+                        <div text-right>
+                          {{activeJob.serviceCategory.name}}
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </a>
+                </ion-col>
+              </ion-row>
+              <div text-center >
+                <button ion-button no-shadow outline color="light-primary"
+                  (click)="goToProjectsPage()" rounded> Projects History</button>
+                <button ion-button no-shadow color="primary" *ngIf="activeJob"
+                  (click)="goToDetailsPage(activeJob)" rounded>View</button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-item no-lines class="recent-title">
+      <ion-icon item-left name="pulse" class="activity-icon"></ion-icon>
+      <h2><strong>Recent Activities</strong></h2>
+      <p>{{(recentActivities.length > 0) ? recentActivities.length : 'No'}} Recent Activities</p>
+    </ion-item>
+
+    <ion-card >
+      <ion-card-content *ngIf="recentActivities.length == 0">
+        <div class="activity-post">
+          <ion-row>
+            <ion-col col-auto>
+              <h3 *ngIf="providerData"><ion-icon name="pin"></ion-icon> {{providerData.workLocation | slice:0:20}}...</h3>
+            </ion-col>
+            <ion-col text-right>
+              <h3>Mon, 28 June</h3>
+            </ion-col>
+          </ion-row>
+          <p padding-vertical>Your In-App activities such as accepting a job, submitting a quote and completing a job would appear here</p>
+        </div>
+      </ion-card-content>
+      <ion-card-content  class='recent' *ngFor="let recentActivity of recentActivities">
+        <a (click)="goToActivityDetails(recentActivity.type, recentActivity.projectId)">
+          <div class="activity-post">
+            <ion-row>
+              <ion-col *ngIf="providerData" col-auto>
+                <h3><ion-icon name="pin"></ion-icon> {{recentActivity.location| slice:0:20}}...</h3>
+              </ion-col>
+              <ion-col float-right align-self-end>
+                <h3>{{recentActivity.createdDate | relativeTime}}</h3>
+              </ion-col>
+            </ion-row>
+            <p padding-vertical>
+              {{recentActivity.description}}
+            </p>
+          </div>
+        </a>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>
+

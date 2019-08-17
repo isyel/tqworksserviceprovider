@@ -1,0 +1,25 @@
+page-notifications {
+  ion-list {
+
+    .notification {
+      width: 100%;
+      border-bottom: 2px solid black;
+      .not-seen ion-item{
+        background-color: #e8eaee;
+      }
+
+      .time-text {
+        color: #3465a4;
+      }
+
+      ion-avatar[item-start]{
+        font-size: 2.0em;
+      }
+    }
+  }
+
+  .scroll-content {
+    margin-bottom: 20px !important;
+  }
+
+}

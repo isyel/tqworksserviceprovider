@@ -1,0 +1,126 @@
+<!--
+  Generated template for the QuoteDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+<ion-content >
+  <ion-fab top left navPop>
+    <button ion-fab class="grayed">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="quote">
+    <ion-card padding-top class="main-card rounded-bottom no-rounded-top">
+      <ion-card-header padding-top>
+        <ion-row>
+          <ion-col>
+            <h3>Quote Breakdown</h3>
+          </ion-col>
+          <ion-col text-right>
+            <span *ngIf="quote.isRejected" text-right class="red-text">Quote Rejected</span>
+            <span *ngIf="!quote.isRejected" text-right 
+              class="{{quote.isApproved ? 'green-span' : 'red-span'}}">
+              {{quote.isApproved ? 'Approved' : 'Pending' }}
+            </span>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="quote.isRejected && quote.rejectedReason">
+          <h5 class="red-text">Reason for rejection</h5>
+          <p>{{quote.rejectedReason}}</p>
+        </div>
+        <ion-row>
+          <ion-col>
+            <h5>Labour Cost</h5>
+            <p>&#8358;{{quote.labourCost}}</p>
+          </ion-col>
+          <ion-col right text-right>
+            <h5>Transportation</h5>
+            <p>&#8358;{{quote.transportation}}</p>
+          </ion-col>
+        </ion-row>
+        <div padding-vertical *ngIf="quote.quoteItems != null && quote.quoteItems.length > 0">
+          <h3>Items List</h3>
+          <hr/>
+          <ion-list>  
+            <ion-item *ngFor="let item of quote.quoteItems">
+              <h2 *ngIf="item.item"><strong>{{item.item.name}}</strong></h2>
+              <ion-row >
+                <ion-col>
+                  <h5>Unit Cost</h5>
+                  <div>&#8358;{{item.unitCost}}</div>
+                </ion-col>
+                <ion-col>
+                  <h5>Quantity</h5>
+                  <div>x{{item.quantity}}</div>
+                </ion-col>
+                <ion-col>
+                  <h5>Total</h5>
+                  <div><strong>&#8358;{{item.totalAmount}}</strong></div>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-list>
+        </div>
+        <div padding-vertical *ngIf="quote.quoteItems == null || quote.quoteItems.length == 0">
+          <h5><strong>No Items For This Quote</strong></h5>
+        </div>
+        <div>
+          <div text-right>
+            <h5>Total Items Cost</h5>
+            <h2><strong>&#8358;{{totalItemsCost}}</strong></h2>
+          </div>
+          <div text-right padding-top>
+            <h5>Sub-Total</h5>
+            <h1><strong>&#8358;{{subTotal}}</strong></h1>
+          </div>
+        </div>
+        <div *ngIf="quote.note != ''">
+          <h3 padding-horizontal>Note</h3>
+          <ion-card class="rounded-bottom">
+            <ion-card-content>
+              <p>{{quote.note}}</p>
+            </ion-card-content>
+          </ion-card>
+        </div>
+        <div text-center padding-top>
+          <h4>created {{quote.createdDate | relativeTime}}</h4>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div padding-vertical margin-vertical>
+      <h3 padding-horizontal>Merchants</h3>
+      <div *ngIf="loading && !merchantsList" text-center>
+        <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+        <div text-center>Loading Available Merchants</div>
+      </div>
+      <ion-card *ngIf="!loading && !merchantsList" padding-vertical>
+        <ion-card-content padding-vertical>
+          <h5>There are no merchants available for the items listed in your quote</h5>
+        </ion-card-content>
+      </ion-card>
+      <div align-items-center text-center *ngIf="!loading && merchantsList">
+        <button ion-button outline text-center color="primary" icon-start 
+          (click)="goToMerchantsPage()" round>
+          <ion-icon name='cart'></ion-icon> Show Available Merchants
+        </button>
+      </div>
+
+    </div>
+    
+  </div>
+</ion-content>
+<ion-footer *ngIf="quote && quote.isRejected && !quote.isApproved && 
+                  (jobStatus == projectStatus.pending || jobStatus == projectStatus.ongoing)">
+    <div>
+      <button no-lines ion-item color="primary" text-center (click)="presentQuoteModal(quote.serviceRequestId)">Re-Send Quote</button>
+    </div>
+</ion-footer>

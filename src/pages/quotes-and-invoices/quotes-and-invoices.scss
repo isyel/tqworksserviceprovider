@@ -1,0 +1,38 @@
+page-quotes-and-invoices {
+
+  ion-badge {
+    padding: 3px 4px !important;
+    border: 1.2px solid #3465a4;
+    font-size: 1.1rem;
+  }
+
+  .badge-ios {
+    border: 1.2px solid #f8f8f8 !important;
+  }
+  
+  ion-card[maxiwidth]{
+    .item-inner {
+      padding-right: 0px !important;
+    }
+  }
+
+  .background {
+    background-size: auto auto;
+    background-repeat: repeat;
+    height: inherit;
+    button[color='primary'] {
+      color: #ffffff;
+      border-radius: 50px;
+      margin: auto;
+      width: 50%;
+    }
+  }
+
+  .scroll-content {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.6) 100%), url(../assets/img/tq_background.png) repeat 0 0;
+  }
+
+  ion-segment {
+    background-color: white;
+  }
+}

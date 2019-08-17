@@ -1,0 +1,163 @@
+<ion-header>
+  <ion-navbar no-border-bottom>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Projects
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentFilter($event)">
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+  <ion-toolbar sticky no-border-top no-padding>
+    <ion-searchbar no-padding no-margin color="primary" class="round"
+                   [(ngModel)]="queryText"
+                   (ionInput)="searchKeyword()"
+                   placeholder="Search" >
+    </ion-searchbar>
+  </ion-toolbar>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <div class="background" *ngIf="segment==='all'">
+    <div *ngIf="loading && projectHistory.length == 0" text-center>
+      <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+      <div align="center">Loading projects...</div>
+    </div>
+    <div class="over-image-text all" text-center *ngIf="projectHistory.length == 0 && !loading && tempProjectHistory.length == 0">
+      <div class="dummy" text-center margin-top padding-top>
+        <ion-icon name="briefcase" ></ion-icon>
+      </div>
+      <h3 margin-bottom no-padding><strong>No Projects</strong></h3>
+      <p>Accept a project to see it here</p>
+    </div>
+    <div class="over-image-text all" text-center *ngIf="projectHistory.length == 0 && !loading && tempProjectHistory.length > 0">
+      <div class="dummy" text-center margin-top padding-top>
+        <ion-icon name="briefcase" ></ion-icon>
+      </div>
+      <h3 margin-bottom no-padding><strong>No Projects Found</strong></h3>
+      <h5 class="red-text">
+        No {{filterStatus}} Projects found
+      </h5>
+      <button ion-item outline color="primary" align-items-center (click)="updateOfflineJobsHistory()">Show All Projects</button>
+    </div>
+    <div *ngIf="projectHistory">
+      <ion-card *ngFor="let project of projectHistory" (click)="goToJobDetail(project)">
+        <ion-card-content>
+          <ion-row>
+            <ion-col>
+              <p>
+                <strong>{{project.createdDate | relativeTime}}</strong>
+              </p>
+            </ion-col>
+            <ion-col col-auto>
+              <div align="right">
+                <span *ngIf="!project.accepted" class='danger'>
+                  Action Required
+                </span>
+                <span *ngIf="project.accepted"
+                  class="{{((showProjectStatus(project.status) == 'On Going') || 
+                            (showProjectStatus(project.status) == 'Completed') || 
+                            (showProjectStatus(project.status) == 'Closed')) && project.isApproved ? 'green-span' : 'orange-span'}}">
+                  {{showProjectStatus(project.status)}}
+                </span>
+              </div>
+
+            </ion-col>
+          </ion-row>
+          <div>
+            <h6>
+              <strong>{{project.serviceCategory.name}} request</strong>
+            </h6>
+          </div>
+          <ion-row>
+            <ion-col>
+              {{project.location}}
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>
+  </div>
+  <div class="background" *ngIf="segment == 'search'">
+    <div class="over-image-text all" text-center *ngIf="searchResults.length == 0 && !loading">
+      <div class="dummy" text-center margin-top padding-top>
+        <ion-icon name="briefcase" ></ion-icon>
+      </div>
+      <h3 margin-bottom no-padding><strong>No Projects with {{queryText}} keyword found</strong></h3>
+    </div>
+    <div *ngIf="searchResults">
+      <ion-list>
+
+        <ion-card *ngFor="let project of searchResults" >
+          <a (click)="goToJobDetail(project)">
+            <ion-card-content>
+              <!--<h3>{{project.description}}</h3>-->
+              <ion-row>
+                <ion-col>
+                  <p>
+                    <strong>{{project.createdDate | relativeTime}}</strong>
+                  </p>
+                </ion-col>
+                <ion-col col-auto>
+                  <div align="right">
+                    <span *ngIf="!project.accepted" class='danger'>
+                      Action Required
+                    </span>
+                    <span *ngIf="project.accepted"
+                      class="{{((showProjectStatus(project.status) == 'On Going') || 
+                                (showProjectStatus(project.status) == 'Completed') || 
+                                (showProjectStatus(project.status) == 'Closed')) && project.isApproved ? 'green-span' : 'orange-span'}}">
+                      {{showProjectStatus(project.status)}}
+                    </span>
+                  </div>
+  
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <p>
+                    {{project.description | slice: 0 : 20}} ...<br>
+                  </p>
+                </ion-col>
+                <ion-col>
+                  <div text-right>
+                    {{project.serviceCategory.name}}
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <p>{{project.location}}</p>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </a>
+        </ion-card>
+      </ion-list>
+    </div>
+    <div *ngIf="loading" text-center>
+      <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+      <div align="center">Loading projects...</div>
+    </div>
+  </div>
+
+
+
+</ion-content>

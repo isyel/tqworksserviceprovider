@@ -1,0 +1,125 @@
+page-dashboard {
+
+  ion-badge {
+    padding: 3px 4px !important;
+    border: 1.2px solid #3465a4;
+    font-size: 1.1rem;
+  }
+
+  .badge-ios {
+    border: 1.2px solid #f8f8f8 !important;
+  }
+
+  .dashboard-icons {
+    font-size: 50px;
+  }
+
+  .banner {
+    border-bottom: 1px solid #7777aa;
+    background-color: color($colors, primary);
+    /*margin-top: 43px;*/
+    .profile-details {
+      color: white;
+      margin-top: 7px;
+    }
+  }
+
+  a[color="secondary"] {
+    color: greenyellow;
+  }
+
+  a[color="danger"] {
+    color: crimson;
+  }
+
+  .recent-title {
+    color: grey;
+  }
+
+  ion-card {
+    .recent {
+      border-bottom: 0.1px solid;
+    }
+
+    ion-card-content {
+      p {
+        color: gray !important;
+
+        .outline {
+          border: 1px solid color($colors, primary);
+        }
+      }
+
+      p.job-details {
+        color: black !important;
+      }
+
+      .activity-post p, .activity-post {
+        color: black !important;
+      }
+
+      .activity-post h3 {
+        font-weight: bolder;
+      }
+
+      .alert {
+        color: color($colors, primary);
+        font-size: 1.8rem !important;
+      }
+
+      ion-row {
+        ion-col[float-right] {
+          h3 {
+            float: right !important;
+          }
+        }
+      }
+
+      .over-image {
+        padding-top: 2% !important;
+        p {
+          width: 130px !important;
+          margin: auto !important;
+        }
+      }
+    }
+    h2 {
+      font-size: 2.39rem !important;
+    }
+    
+  }
+
+  ion-col {
+    ul {
+      padding: 0;
+      padding-top: 5px;
+      list-style: none;
+      li {
+        padding-inline-end: 5px;
+        padding-inline-start: 5px;
+        display : inline-block; 
+        word-break : break-all;
+        border-right: 1px solid white;
+      }
+
+      li:last-child {
+        border-right: none !important;
+      }
+    }
+    h4[no-margin] a {
+      color: white;
+    }
+  }
+
+  ion-avatar img {
+    border-radius: 11px !important;
+  }
+
+}
+
+ion-modal.inset-modal {
+  // transparent black background overlay
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+  padding: 20vh 10vw;
+}

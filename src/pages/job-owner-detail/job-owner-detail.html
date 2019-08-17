@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{jobOwner?.firstName}}</ion-title>
+    <!--<ion-buttons right>
+      <button ion-button icon-only>
+        <ion-icon name="md-more"></ion-icon>
+      </button>
+    </ion-buttons>-->
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="job-detail">
+  <div text-center *ngIf="jobOwner" padding-top>
+    <img [src]="jobOwner.profilePhoto ? jobOwner.profilePhoto : 'assets/img/customimages/no_avatar.svg'" 
+      [alt]="jobOwner.firstName" imageViewer><br>
+
+    <h3>{{jobOwner.firstName}} {{jobOwner.lastName}}</h3>
+    <p>{{jobOwner?.isActive ? 'Available' : 'Unavailable'}}</p>
+
+    <ion-card no-padding>
+      <ion-card-header>About and phone number</ion-card-header>
+      <ion-card-content>
+        <p>{{jobOwner.email}}</p>
+        <p>{{jobOwner.phoneNumber}}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card no-padding>
+      <ion-card-content>
+        <button ion-button round outline color="primary" icon-start (click)="callClient(jobOwner.phoneNumber)">
+          <ion-icon name='call'></ion-icon>
+          Call
+        </button>
+        <!-- <button ion-button clear color="primary" icon-start (click)="goToMail(jobOwner.email)">
+          <ion-icon name='mail'></ion-icon>
+        </button> -->
+        <button ion-button round outline color="primary" icon-start (click)="goToChatPage(jobOwner.phoneNumber)">
+          <ion-icon name='text'></ion-icon>
+          Message
+        </button>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+
+</ion-content>

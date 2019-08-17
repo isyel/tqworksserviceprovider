@@ -1,0 +1,77 @@
+page-profile-performance {
+
+  ion-badge {
+    padding: 3px 4px !important;
+    border: 1.2px solid #3465a4;
+    font-size: 1.1rem;
+  }
+
+  .badge-ios {
+    border: 1.2px solid #f8f8f8 !important;
+  }
+  
+  .avatar {
+    border-radius: 100%;
+    position: absolute;
+  }
+  ion-avatar {
+    color:#fff;
+  }
+  ion-avatar img {
+    max-width: 70px;
+    max-height: 70px;
+    border-radius: 50%;
+    // border: 1px solid #ccc;
+  }
+
+  ion-card[maxiwidth]{
+    width: 100% !important;
+  }
+
+  .social-login {
+    font-size: 2.5em;
+  }
+
+  h2, h3, h5, h6 {
+    text-transform: uppercase;
+    color: #adacac !important;
+  }
+
+  ul {
+    padding: 0px;
+
+    &.rating li {
+      padding: 0px 0px !important;
+      background: none;
+      color: #ffb400;
+
+      ion-icon {
+        font-size: 20px;
+      }
+    }
+  }
+
+  ion-item[item-end] {
+    margin: 9px -3px 9px 0 !important;
+  }
+
+  img.profile-pic {
+    max-width: 120px;
+    border-radius: 11px;
+  }
+
+  div.profile-pics {
+    position: relative;
+    margin: auto;
+  }
+
+  ion-fab[bottom] {
+      bottom: 0px;
+      right: calc(0px + env(safe-area-inset-right));
+  }
+
+  .fab {
+    width: 45px;
+    height: 45px;
+  }
+}

@@ -1,0 +1,122 @@
+<!--
+  Generated template for the WalletPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My Wallet</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only class="notification-button" (click)='goToNotifications($event)'>
+        <ion-icon name="notifications">
+            <ion-badge *ngIf="this._userData.getNotificationCount() > 0" id="notifications-badge" color="danger">{{this._userData.getNotificationCount()}}</ion-badge>
+        </ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-card no-padding no-margin 
+    class="full-width rounded-bottom no-rounded-top primary-background">
+    <ion-card-content padding>
+      <ion-row padding>
+        <ion-col col-3 padding-vertical>
+          <ion-avatar item-start>
+            <img alt="Wallet pic" src="assets/img/customimages/wallet_icon_2.ico" width="18px" height="auto">
+          </ion-avatar>
+        </ion-col>
+        <ion-col col-9 text-center *ngIf="!walletBalance">
+          <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+          <p class="white-text">Loading wallet Balance</p>
+        </ion-col>
+        <ion-col col-9 text-center padding-vertical *ngIf="walletBalance">
+          <h2 style=" font-size: 1.3rem !important;">Current Balance</h2>
+          <p class="white" >&#8358; <span class="wallet-balance" > {{walletBalance.balance}}</span></p>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <ion-row *ngIf="walletBalance" padding-vertical>
+    <ion-col text-center no-padding>
+      <ion-card>
+        <ion-card-content>
+          <p medium-text color="gray">Total Income</p>
+          <span bold class="h3" color="secondary">
+            <strong color="secondary">&#8358;</strong>{{walletBalance.totalIncome | number}}
+          </span>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col text-center no-padding>
+      <ion-card>
+        <ion-card-content>
+          <p medium-text color="gray">Paid Out</p>
+          <span class="h3" bold color="danger">
+            <strong color="danger">&#8358;</strong>{{walletBalance.totalPaidout}}
+          </span>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <div *ngIf="!transactionHistory && loading" text-center>
+    <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+    <p>Loading Wallet Transactions</p>
+  </div>
+  <div class="dummy" *ngIf="!transactionHistory && !loading" text-center no-margin>
+    <ion-icon name="trending-down" ></ion-icon>
+    <p>No Transactions</p>
+  </div>
+  <div text-center no-padding *ngIf="transactionHistory">
+    <div class="dummy" *ngIf="transactionHistory.length == 0" text-center no-margin>
+      <ion-icon name="trending-down" ></ion-icon>
+      <p>No Transactions</p>
+    </div>
+    <ion-card no-padding *ngFor="let transaction of transactionHistory">
+      <ion-card-content>
+        <ion-item no-padding no-lines 
+        *ngIf="getPaymentTypeValue(transaction.paymentType) == 'income' || getPaymentTypeValue(transaction.paymentType)  == 'deposit'">
+          <ion-icon item-start name="trending-up" color="secondary"></ion-icon>
+          <ion-row no-margin>
+            <ion-col>
+              <h2><strong>Credit</strong></h2>
+              <p>[{{transaction.paymentDate | relativeTime}}]</p>
+            </ion-col>
+            <ion-col>
+              <h2><strong>Payment</strong></h2>
+            </ion-col>
+          </ion-row>
+          <span item-end class="green">+&#8358;{{transaction.amount}}</span>
+        </ion-item>
+        <ion-item no-padding no-lines 
+        *ngIf="getPaymentTypeValue(transaction.paymentType)  == 'charges' || getPaymentTypeValue(transaction.paymentType)  == 'withdrawal'">
+          <ion-icon item-start name="trending-down" color="danger"></ion-icon>
+          <ion-row no-margin>
+            <ion-col>
+              <h2><strong>Debit</strong></h2>
+              <p>[{{transaction.transactionReference}}]</p>
+            </ion-col>
+            <ion-col>
+              <h2><strong>Fine</strong></h2>
+            </ion-col>
+          </ion-row>
+          <span item-end class="red">&#8358;{{transaction.amount}}</span>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more history...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+</ion-content>
+

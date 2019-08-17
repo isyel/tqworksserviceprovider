@@ -1,0 +1,150 @@
+<ion-content >
+  <ion-fab top left navPop>
+    <button ion-fab class="grayed">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="job">
+    <ion-card margin-vertical padding-top class="main-card rounded-bottom no-rounded-top">
+      <ion-card-content padding-top>
+        <div padding-top>
+          <h2 class="category"><strong>{{job.serviceCategory.name}} Request</strong></h2>
+          <p>{{job.description}}</p>
+        </div>
+        <ion-row>
+          <ion-col>
+            <h5>Status</h5>
+            <span 
+              class="{{((showProjectStatus(job.status) == 'On Going') || (showProjectStatus(job.status) == 'Completed')
+              || (showProjectStatus(job.status) == 'Closed')) && job.isApproved ? 'green-span' : 'orange-span'}}">
+              {{showProjectStatus(job.status)}}
+            </span>
+            
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="job.serviceProviderId != null" padding-bottom>
+          <ion-col>
+            <h5>Location</h5>
+            <p>{{job.location}}</p>
+          </ion-col>
+        </ion-row>
+
+        <div *ngIf="(job.commitmentFeeDebited && !job.fullPaymentDebited) && 
+          (showProjectStatus(job.status) != 'Cancelled')">
+          <h3 *ngIf="jobAlertUser">Client</h3>
+          <ion-card no-margin class="rounded-bottom">
+            <div *ngIf="loading && !jobAlertUser" text-center padding>
+              <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+              <div align="center"><p>Loading Project Client</p></div>
+            </div>
+            <ion-card-content *ngIf="!loading && !jobAlertUser">
+              <h5>Client Details Not Found</h5>
+            </ion-card-content>
+            <ion-card-content *ngIf="jobAlertUser">
+              <ion-row>
+                <ion-col col-3>
+                  <a (click)="goToUserDetail(jobAlertUser)">
+                    <img src="{{jobAlertUser.profilePhoto ? jobAlertUser.profilePhoto : 'assets/img/customimages/no_avatar.svg'}}" 
+                    alt="avatar" onerror="this.src='assets/img/customimages/no_avatar.svg'">
+                  </a>
+                </ion-col>
+                <ion-col text-center align-items-center>
+                  <h3>{{jobAlertUser.firstName}} {{jobAlertUser.lastName}}</h3>
+                  <p>{{jobAlertUser.phoneNumber}}</p>
+                  <ion-buttons *ngIf="job.accepted" class="contact" align-items-center>
+                    <button ion-button clear color="primary" icon-start (click)="callClient(jobAlertUser.phoneNumber)">
+                      <ion-icon name='call'></ion-icon>
+                    </button>
+                    <!-- <button ion-button clear color="primary" icon-start (click)="goToMail(jobAlertUser.email)">
+                      <ion-icon name='mail'></ion-icon>
+                    </button> -->
+                    <button ion-button clear color="primary" icon-start (click)="goToChatPage(jobAlertUser.phoneNumber)">
+                      <ion-icon name='text'></ion-icon>
+                    </button>
+                    <button ion-button clear color="primary" icon-start (click)="openJobLocation(job)">
+                      <ion-icon name='pin'></ion-icon>
+                    </button>
+                  </ion-buttons>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </div>
+        
+        <div *ngIf="job.accepted && job.commitmentFeeDebited" padding-vertical>
+          <h3 *ngIf="projectQuotes">Project Quote</h3>
+          <div *ngIf="loading && !projectQuotes" text-center padding>
+            <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+            <div align="center"><p>Loading Project Quote</p></div>
+          </div>
+          <div padding margin *ngIf="!loading && !projectQuotes" text-center>
+              <!-- <h5>Quote Not Available For This Job</h5> -->
+              <button *ngIf="((showProjectStatus(job.status) == 'On Going') || 
+                (showProjectStatus(job.status) == 'Pending'))" 
+                ion-button color="white" text-center (click)="presentQuoteModal(job.id)" outline rounded>
+                Create Quote
+              </button>
+          </div>
+          <ion-card *ngIf="projectQuotes" no-margin class="rounded-bottom">
+            <a (click)="goToQuoteDetail(projectQuotes)">
+              <ion-card-header>
+                <ion-row>
+                  <ion-col>
+                    <h2><strong>&#8358;{{projectQuotes.totalAmount - projectQuotes.processingFee}}</strong></h2>
+                  </ion-col>
+                  <ion-col>
+                    <h6 *ngIf="!projectQuotes.isRejected" text-right right 
+                      class="{{projectQuotes.isApproved ? 'green-text' : 'red-text'}}">
+                      {{projectQuotes.isApproved ? 'Approved' : 'Pending Approval' }}
+                    </h6>
+                    <h6 *ngIf="projectQuotes.isRejected" text-right right class="red-text">Quote Rejected</h6>
+                  </ion-col>
+                </ion-row>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-row>
+                  <ion-col>
+                    <h5>Labour Cost</h5>
+                    <p>&#8358;{{projectQuotes.labourCost}}</p>
+                  </ion-col>
+                  <ion-col>
+                    <h5>Items Cost</h5>
+                    <p >&#8358;{{totalItemsCost}}</p>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </a>
+          </ion-card>
+        </div>
+        <div text-center padding-top>
+          <h4 *ngIf="job.acceptedDate != null">Project Started {{job.acceptedDate | relativeTime}}</h4>
+          <!-- <p *ngIf="job.acceptedDate != null && job.updatedDate != null">
+            Ended {{job.updatedDate | relativeTime}}
+          </p> -->
+          <h4 *ngIf="job.acceptedDate == null">Project Never Commenced</h4>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="!job.commitmentFeeDebited &&  job.isAccepted &&
+      (showProjectStatus(job.status) != 'Cancelled') && (job.serviceProviderId != null)" text-center padding margin>
+      <span class="green-span">Project Accepted</span>
+      <p>Awaiting Commitment Fee Payment From Client</p>
+    </div>
+
+    <div *ngIf="job.serviceProviderId == null" text-center padding margin>
+      <span class="red-span">You Rejected This Job</span>
+    </div>
+
+    
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="providerData && job && job.accepted && (job.serviceProviderId === providerData.id)">
+    <div *ngIf="(showProjectStatus(job.status) == 'On Going') || (showProjectStatus(job.status) == 'Pending')">
+      <button no-lines ion-item color="primary" text-center (click)="manageProject(job)">Manage Project</button>
+    </div>
+</ion-footer>

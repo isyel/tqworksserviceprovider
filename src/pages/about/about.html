@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>About</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="about-header" align="center">
+    <h4>TQWorks Service Provider</h4>
+    <p padding-horizontal>
+      A Service Provider App To Engage Service Workers on Demand, using a proximity notifcation
+    </p>
+    <a (click)="getURL('WebPage')">Visit Website</a>
+  </div>
+  <div class="about-info">
+    <ion-list no-margin>
+      <ion-item><ion-icon name="mail"></ion-icon> support@tqworks.com</ion-item>
+      <ion-item><ion-icon name="call"></ion-icon> 08068952256</ion-item>
+    </ion-list>
+
+    <ion-list no-margin>
+      <ion-item>
+        <ion-icon item-start name="logo-facebook" color="facebook"></ion-icon> Follow us on Facebook
+      </ion-item>
+      <ion-item>
+        <ion-icon item-start name="logo-twitter" color="twitter"></ion-icon> Follow us on Twitter
+      </ion-item>
+    </ion-list>
+
+    <ion-list no-margin>
+      <ion-item>
+        <ion-row>
+          <ion-col >
+            <a (click)="getURL('TermsOfUse')">Terms of Use</a>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col >
+            <a (click)="getURL('PrivacyPageUrl')">Privacy policy</a>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+    <div align="center">
+      <button ion-button small rounded text-center color="primary" >
+          <a (click)="getURL('ArtisanTermsAndConditionsUrl')">Go To Help/Support</a>
+      </button>
+      <div padding-vertical>
+        Version 1.3
+      </div>
+    </div>
+    <br>
+
+  </div>
+</ion-content>

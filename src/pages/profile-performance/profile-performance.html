@@ -1,0 +1,138 @@
+<!--
+  Generated template for the ProfilePerformancePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="hello1">
+  <ion-navbar color="blue2" style="background: none; border-bottom: none">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profile</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only class="notification-button" (click)='goToNotifications($event)'>
+        <ion-icon name="notifications">
+            <ion-badge *ngIf="this._userData.getNotificationCount() > 0" id="notifications-badge" color="danger">{{this._userData.getNotificationCount()}}</ion-badge>
+        </ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding>
+
+  <div padding-top text-center *ngIf="providerData">
+      <ion-row>
+        <div class="profile-pics" align-items-center align="center">
+          <img *ngIf="(segmentView==='one')" 
+          src="{{providerData.photograph ? providerData.photograph : 'assets/img/customimages/no_avatar.svg'}}" 
+          alt="avatar" class="profile-pic" onerror="this.src='assets/img/customimages/no_avatar.svg'" imageViewer>
+        </div>
+      </ion-row>
+    <p>{{providerData.firstName}} {{providerData.lastName}}</p>
+    <div no-padding>
+      <p no-margin no-padding *ngIf="(segmentView==='one')"><b>{{userEmail}}</b></p>
+      <p no-margin >{{providerData.phoneNumber}}</p>
+      <p no-padding no-margin class="info" *ngIf="(segmentView==='one')">
+        <span *ngFor="let category of providerData.categories">
+          {{category != providerData.categories[0] ? ',' : ''}} {{category.name}} 
+        </span>
+      </p>
+      <!--<p no-padding no-margin color="blue2"><a href="#">{{(profile | async)?.facebook}}</a></p>-->
+      <rating *ngIf="overallRating > 0" item-end [(ngModel)]="overallRating"
+              readOnly="true"
+              max="5"
+              emptyStarIconName="star-outline"
+              halfStarIconName="star-half"
+              starIconName="star"
+              nullable="false"> <!--use it when you need to do something when user clicks on a star. in case you only need to change ngModel property, this property can be ommited.-->
+      </rating>
+    </div>
+  </div>
+
+
+  <!--***********  Segement tab ***********-->
+  <ion-item-divider sticky no-lines>
+    <ion-segment mode="md" [(ngModel)]="segmentView" color="primary">
+      <ion-segment-button value="one">
+        Profile
+      </ion-segment-button>
+      <ion-segment-button value="two" (ionSelect)="getReviews()">
+        Reviews
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item-divider>
+
+
+
+
+  <!--***********    Segement one  ***********-->
+  <div *ngIf="(segmentView==='one') && providerData">
+    <ion-card no-padding no-margin maxiwidth class="no-rounded-top rounded-bottom">
+      <ion-card-content>
+        <p padding-vertical no-margin class="info">
+          {{providerData.biography}}
+          <br>
+          <!-- Contact Details <br/>
+          {{providerData.mobileNumber1}} -->
+        </p>
+      </ion-card-content>
+    </ion-card>
+    <ion-card padding margin-top no-margin maxiwidth class="no-radius">
+      <ion-card-content no-padding>
+        <h6>WORK LOCATION</h6>
+        <p no-margin class="info">
+          {{providerData.workLocation}}
+          <br>
+          {{providerData.city}}, {{providerData.country}}
+        </p>
+      </ion-card-content>
+    </ion-card>
+    <div text-center  padding-top>
+        <button ion-button rounded color="danger" (click)="logout()">Logout</button>
+    </div>
+    
+  </div>
+
+  <!--***********  Segment two  ***********-->
+  <div  *ngIf="segmentView==='two' && loading && !ratings" text-center>
+    <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
+    <div align="center">Loading Reviews</div>
+  </div>
+  <div class="dummy" *ngIf="segmentView==='two' && !loading && (!ratings || ratings.length == 0)" text-center margin-top padding-vertical>
+    <ion-icon name="star-half" ></ion-icon>
+    <p>No Reviews Yet</p>
+  </div>
+  <div *ngIf="segmentView==='two' && ratings">
+    <ion-card no-padding no-margin maxiwidth *ngFor="let rating of ratings">
+      <ion-card-content>
+        <ion-item no-padding no-lines>
+          <ion-avatar item-start>
+            <img alt="Speaker profile pic" 
+            src="{{rating.ratedByUser != null && rating.ratedByUser.profilePhoto && rating.showIdentity ?
+            rating.ratedByUser.profilePhoto : 'assets/img/customimages/no_avatar.svg'}}">
+          </ion-avatar>
+          <strong>{{rating.showIdentity && rating.ratedByUser != null ? rating.ratedByUser.firstName : 'Anonymous'}}</strong>
+          <p>{{rating.showIdentity && rating.ratedByUser != null ? rating.ratedByUser.email : 'Mail, Anonymous'}}</p>
+          <rating item-end [(ngModel)]="rating.avgRating"
+                  readOnly="true"
+                  max="5"
+                  emptyStarIconName="star-outline"
+                  halfStarIconName="star-half"
+                  starIconName="star"
+                  nullable="false"> <!--use it when you need to do something when user clicks on a star. in case you only need to change ngModel property, this property can be ommited.-->
+          </rating>
+        </ion-item>
+        <p no-padding no-margin class="info">
+          {{rating.comment}}
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- <ion-fab right bottom *ngIf="segmentView==='one'">
+    <button ion-fab color="primary" (click)="editProfile()"><ion-icon name="create"></ion-icon></button>
+  </ion-fab> -->
+
+</ion-content>
