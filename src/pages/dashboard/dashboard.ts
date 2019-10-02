@@ -61,6 +61,9 @@ export class DashboardPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DashboardPage');
+    this._userData.getActiveJob().then((activeJob) => {
+      activeJob == null ? console.log("No active job Offline") : this.activeJob = activeJob;
+    });
     this.getRecentActivities();
   }
 
@@ -171,6 +174,7 @@ export class DashboardPage {
           (project.status == ProjectStatusEnum.ongoing || project.status == ProjectStatusEnum.awaitingCompletion || 
             project.status == ProjectStatusEnum.pending)
         );
+        this._userData.saveActiveJob(this.activeJob);
         this.loading = false;
       }
     },

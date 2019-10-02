@@ -180,6 +180,15 @@ export class UserData {
     return value;
   };
 
+  saveActiveJob(activeJob: ServiceRequestModel): void {
+    this.storage.set('activeJob', activeJob);
+  };
+
+  async getActiveJob(): Promise<ServiceRequestModel>  {
+    const value = await this.storage.get('activeJob');
+    return value;
+  };
+
   saveReviews(reviews: RatingModel[]): void {
     this.storage.set('reviews', reviews);
   };

@@ -33,7 +33,7 @@
       </ion-col>
     </ion-row>
 
-    <div *ngIf="quote.items.length > 0 || quote.newItems.length > 0" padding-horizontal>
+    <div *ngIf="quote.items?.length > 0 || quote.newItems?.length > 0" padding-horizontal>
       <h3>Items List</h3>
       <ion-list>
         <ion-item-sliding #slidingItem *ngFor="let item of quote.items">
@@ -100,7 +100,7 @@
     <button ion-item (click)='showItemPopover($event)'>
       <ion-row>
         <ion-col>
-          Add {{quote.newItems.length > 0 || quote.items.length > 0 ? 'more' : ''}} item to quote
+          Add {{quote.newItems?.length > 0 || quote.items?.length > 0 ? 'more' : ''}} item to quote
         </ion-col>
         <ion-col col-1>
           <a class='add-item' >
@@ -113,7 +113,7 @@
     <ion-item no-lines>
       <div align="right">
         <h5>Total Items Cost</h5>
-        <h2><strong>&#8358;{{quote.itemTotalAmount}}</strong></h2>
+        <h2><strong>&#8358;{{quote.itemsTotalAmount}}</strong></h2>
       </div>
     </ion-item>
     <ion-item>
@@ -131,7 +131,9 @@
 
     <ion-item>
       <button ion-item color="primary" rounded text-center [disabled]="!bidQuote.valid"
-      (click)='submitQuote(bidQuote)'>{{quoteId == null ? 'Send Quote' : 'Re-Send Quote'}}</button>
+        (click)='submitQuote(bidQuote)'>
+        {{this.navParams.data.quote == null ? 'Send Quote' : 'Update Quote'}}
+      </button>
     </ion-item>
   </form>
 

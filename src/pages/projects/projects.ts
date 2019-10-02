@@ -112,7 +112,6 @@ export class ProjectsPage {
           this.totalData = result.totalCount;
           this.totalPage = result.totalPages;
           this.projectHistory = result.items;
-          console.log("Projects from API: ",this.projectHistory);
           this.tempProjectHistory = this.projectHistory;
           this._userData.setOfflineProjectData(this.projectHistory);
           this.loading = false;

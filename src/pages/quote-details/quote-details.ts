@@ -43,7 +43,6 @@ export class QuoteDetailsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad QuoteDetailsPage');
     this.quote = this.navParams.data.quoteData;
-    console.log('Quote: ', this.quote);
     this.jobStatus = this.navParams.data.jobStatus;
     if(this.quote != undefined && this.quote.quoteItems != null) {
       this.totalItemsCost = this.quote.quoteItems.reduce((sum, item) => sum + item.totalAmount, 0);

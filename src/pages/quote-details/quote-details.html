@@ -51,7 +51,7 @@
           </ion-col>
           <ion-col right text-right>
             <h5>Transportation</h5>
-            <p>&#8358;{{quote.transportation}}</p>
+            <p>{{quote.transportation <= 0 ? "N/A" : "&#8358;"+quote.transportation}}</p>
           </ion-col>
         </ion-row>
         <div padding-vertical *ngIf="quote.quoteItems != null && quote.quoteItems.length > 0">
@@ -85,7 +85,7 @@
             <h5>Total Items Cost</h5>
             <h2><strong>&#8358;{{totalItemsCost}}</strong></h2>
           </div>
-          <div text-right padding-top>
+          <div padding-top text-right>
             <h5>Sub-Total</h5>
             <h1><strong>&#8358;{{subTotal}}</strong></h1>
           </div>
@@ -131,6 +131,7 @@
 <ion-footer *ngIf="quote && quote.isRejected && !quote.isApproved && 
                   (jobStatus == projectStatus.pending || jobStatus == projectStatus.ongoing)">
     <div>
-      <button no-lines ion-item color="primary" text-center (click)="presentQuoteModal(quote.serviceRequestId)">Re-Send Quote</button>
+      <button no-lines ion-item color="primary" text-center 
+        (click)="presentQuoteModal(quote.serviceRequestId)">Re-Send Quote</button>
     </div>
 </ion-footer>

@@ -37,37 +37,32 @@ import { IonicSelectableComponent } from 'ionic-selectable';
               <ng-template ionicSelectableAddItemTemplate let-item="selectedItem"
                 let-isAdd="isAdd">
                 <form [formGroup]="itemAddForm" novalidate>
-                    <ion-list>
-                        <div padding-horizontal class="add-new">
-                            <p>
-                              Would you like to add this Item? <br/>
-                            </p>
-                        </div>
-                        <ion-input
-                            type="text"
-                            formControlName="itemName"
-                            autocorrect="off"
-                            autocapitalize="true" hidden="true">
-                        </ion-input>
-                    </ion-list>
-                    
+                  <ion-list>
+                    <div padding-horizontal class="add-new">
+                      <p>
+                        Would you like to add this Item? <br/>
+                      </p>
+                    </div>
+                    <ion-input type="text" formControlName="itemName" autocorrect="off"
+                      autocapitalize="true" hidden="true">
+                    </ion-input>
+                  </ion-list>
                 </form>
                 <ion-footer>
                   <ion-toolbar>
                     <ion-row>
-                        <ion-col col-6>
-                            <button ion-button full no-margin
-                                (click)="itemComponent.hideAddItemTemplate()" rounded>
-                                No
-                            </button>
-                        </ion-col>
-                        <ion-col col-6>
-                            <button ion-button full no-margin
-                                (click)="addNewItemToForm()"
-                                 rounded>
-                                Yes
-                            </button>
-                        </ion-col>
+                      <ion-col col-6>
+                        <button ion-button full no-margin
+                          (click)="itemComponent.hideAddItemTemplate()" rounded>
+                          No
+                        </button>
+                      </ion-col>
+                      <ion-col col-6>
+                        <button ion-button full no-margin
+                          (click)="addNewItemToForm()" rounded>
+                          Yes
+                        </button>
+                      </ion-col>
                     </ion-row>
                   </ion-toolbar>
                 </ion-footer>
@@ -77,17 +72,17 @@ import { IonicSelectableComponent } from 'ionic-selectable';
           <ion-item>
             <ion-label floating>Price(&#8358;)</ion-label>
             <ion-input type="number" name="price"
-                        [(ngModel)]="price" #itemPrice="ngModel" required></ion-input>
+              [(ngModel)]="price" #itemPrice="ngModel" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label floating>Quantity</ion-label>
             <ion-input type="number" name="quantity"
-                        [(ngModel)]="quantity" #itemQuantity="ngModel" required></ion-input>
+              [(ngModel)]="quantity" #itemQuantity="ngModel" required></ion-input>
           </ion-item>
           <ion-item *ngIf="isNewItem" >
             <ion-label floating>Description</ion-label>
             <ion-input type="text" name="description"
-                        [(ngModel)]="tempNewItem.description" #description="ngModel"></ion-input>
+              [(ngModel)]="tempNewItem.description" #description="ngModel"></ion-input>
           </ion-item>
           <ion-item>
             <button *ngIf="!isNewItem" ion-item color="primary" rounded text-center [disabled]="!itemForm.valid"
@@ -175,7 +170,7 @@ export class AddItemPopoverPage {
       itemOptions.itemId = this.selectedItem.id;
       itemOptions.unitCost = this.price;
       itemOptions.totalAmount = itemOptions.quantity * itemOptions.unitCost;
-      this.quote.itemTotalAmount += itemOptions.totalAmount;
+      this.quote.itemsTotalAmount += itemOptions.totalAmount;
       this.quote.totalAmount += itemOptions.totalAmount;
       this.quote.items.push(JSON.parse(JSON.stringify(itemOptions)));
     }
@@ -200,7 +195,7 @@ export class AddItemPopoverPage {
     this.tempNewItem.quantity = this.quantity;
     this.tempNewItem.unitCost = this.price;
     this.tempNewItem.totalAmount = this.tempNewItem.unitCost * this.tempNewItem.quantity;
-    this.quote.itemTotalAmount += (this.tempNewItem.unitCost * this.tempNewItem.quantity);
+    this.quote.itemsTotalAmount += (this.tempNewItem.unitCost * this.tempNewItem.quantity);
     this.quote.totalAmount += (this.tempNewItem.unitCost * this.tempNewItem.quantity);
     this.quote.newItems.push(JSON.parse(JSON.stringify(this.tempNewItem)));
     this.isNewItem = false;

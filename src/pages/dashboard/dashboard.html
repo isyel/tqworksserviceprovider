@@ -89,7 +89,7 @@
                 <ion-col *ngIf="!loading && !activeJob" text-center>
                   <h2><strong>No Active Project</strong></h2><br>
                 </ion-col>
-                <ion-col *ngIf="activeJob">
+                <ion-col *ngIf="activeJob && availabilityText == 'On a Job'">
                   <a  (click)="goToDetailsPage(activeJob)">
                     <ion-row>
                       <ion-col item-left>

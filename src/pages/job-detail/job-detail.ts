@@ -75,6 +75,7 @@ export class JobDetailPage {
         }
       },
       error => {
+        this.loading = false
         console.log(error);
       },
       () => {

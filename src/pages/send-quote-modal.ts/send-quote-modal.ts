@@ -20,7 +20,7 @@ import { RecentActivitiesModel } from '../../models/recent-activities-model';
 export class SendQuoteModal {
   quote: QuoteOptions =
     {id: 0, serviceProviderId : 0, serviceRequestId: 0, totalAmount: 0, labourCost: null, transportation: 0, 
-      itemTotalAmount: 0, processingFee: 0, differential: 0, note: '', items : [], 
+      itemsTotalAmount: 0, processingFee: 0, differential: 0, note: '', items : [], providerPayableBalance: 0,
       isActive: true, newItems: [], createdDate: new Date()};
   hintText: string;
   providerData: ServiceProviderModel;
@@ -41,21 +41,15 @@ export class SendQuoteModal {
       this.quote.serviceProviderId = this.providerData.id;
     });
     if (this.navParams.data.quote != null) {
-      this.quote.id = this.navParams.data.quote.id;
-      this.quote.serviceProviderId = this.navParams.data.quote.serviceProviderId;
+      this.quote = this.navParams.data.quote;
+      this.quote.totalAmount = this.quote.itemsTotalAmount + this.quote.transportation + this.quote.labourCost;
+      //Use foreach cos, model structure of quote.items is different from received quote, when quote is to be edited
+      this.quote.items = [];
+      this.quote.newItems = [];
       this.navParams.data.quote.quoteItems.forEach((quoteItem) => {
         this.quote.items.push({name: quoteItem.item.name, requestQuoteId: quoteItem.requestQuoteId, itemId: quoteItem.itemId, 
                               quantity: quoteItem.quantity, unitCost: quoteItem.unitCost, totalAmount: quoteItem.totalAmount})
       });
-      this.quote.itemTotalAmount = this.navParams.data.quote.itemTotalAmount;
-      this.quote.processingFee = this.navParams.data.quote.processingFee;
-      this.quote.differential = this.navParams.data.quote.differential;
-      this.quote.serviceRequestId = this.navParams.data.quote.serviceRequestId;
-      this.quote.itemTotalAmount = this.quote.items.reduce((sum, item) => sum + item.totalAmount, 0);
-      this.quote.totalAmount = this.navParams.data.quote.labourCost + this.navParams.data.quote.transportation + this.quote.itemTotalAmount;
-      this.quote.labourCost = this.navParams.data.quote.labourCost;
-      this.quote.transportation = this.navParams.data.quote.transportation;
-      this.quote.note = this.navParams.data.quote.note;
     }
     else
       this.quote.serviceRequestId = this.navParams.data.requestId;
@@ -66,7 +60,7 @@ export class SendQuoteModal {
   }
 
   calculateCost() {
-    this.quote.totalAmount = +this.quote.labourCost + +this.quote.transportation + this.quote.itemTotalAmount;
+    this.quote.totalAmount = +this.quote.labourCost + +this.quote.transportation + this.quote.itemsTotalAmount;
     this.quote.totalAmount = (isNaN(this.quote.totalAmount)) ? 0 : this.quote.totalAmount;
   }
 
@@ -92,7 +86,7 @@ export class SendQuoteModal {
     popover.onDidDismiss(data => {
       if(data != null) {
         this.quote = data;
-        this.quote.itemTotalAmount = this.quote.items.reduce((sum, item) => sum + item.totalAmount, 0) +
+        this.quote.itemsTotalAmount = this.quote.items.reduce((sum, item) => sum + item.totalAmount, 0) +
                               this.quote.newItems.reduce((sum, item) => sum + item.totalAmount, 0)
       }
     });
@@ -139,7 +133,7 @@ export class SendQuoteModal {
         this.quote.items.forEach( (item, index) => {
           if(item === itemToRemove) this.quote.items.splice(index,1);
         });
-        this.quote.itemTotalAmount -= itemToRemove.totalAmount;
+        this.quote.itemsTotalAmount -= itemToRemove.totalAmount;
         this.quote.totalAmount -= itemToRemove.totalAmount;
       }
     });
@@ -157,7 +151,7 @@ export class SendQuoteModal {
         this.quote.newItems.forEach( (item, index) => {
           if(item === itemToRemove) this.quote.newItems.splice(index,1);
         });
-        this.quote.itemTotalAmount -= itemToRemove.totalAmount;
+        this.quote.itemsTotalAmount -= itemToRemove.totalAmount;
         this.quote.totalAmount -= itemToRemove.totalAmount;  
       }
     });

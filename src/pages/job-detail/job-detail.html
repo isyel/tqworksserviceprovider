@@ -9,7 +9,10 @@
   </ion-refresher>
   <div *ngIf="job">
     <ion-card margin-vertical padding-top class="main-card rounded-bottom no-rounded-top">
-      <ion-card-content padding-top margin-top  *ngIf="!loading && !job.serviceProviderId">
+      <div *ngIf="loading" text-center>
+        <p text-center color="white">Loading job Details...</p>
+      </div>
+      <ion-card-content padding-top margin-top  *ngIf="!loading && job.serviceProviderId == null">
         <div padding>
           <h2 class="category" text-center>
             <strong>Job Request details not Available</strong>
@@ -117,7 +120,7 @@
                     <h5>Labour Cost</h5>
                     <p>&#8358;{{projectQuotes.labourCost}}</p>
                   </ion-col>
-                  <ion-col>
+                  <ion-col text-right>
                     <h5>Items Cost</h5>
                     <p >&#8358;{{totalItemsCost}}</p>
                   </ion-col>
