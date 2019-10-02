@@ -305,21 +305,21 @@ export class JobsPage {
         title: 'Contact ' + jobOwner.firstName,
         buttons: [
           {
-            text: `Email ( ${jobOwner.email} )`,
+            text: `Email ${jobOwner.email}`,
             icon: mode !== 'ios' ? 'mail' : null,
             handler: () => {
               window.open('mailto:' + jobOwner.email);
             }
           } as ActionSheetButton,
           {
-            text: `Send an SMS to ( ${jobOwner.firstName} )`,
+            text: `Send an SMS to ${jobOwner.firstName}`,
             icon: mode !== 'ios' ? 'chatbubbles' : null,
             handler: () => {
               this.goToChatPage(jobOwner.phoneNumber);
             }
           } as ActionSheetButton,
           {
-            text: `Call ( ${jobOwner.phoneNumber} )`,
+            text: `Call ${jobOwner.phoneNumber}`,
             icon: mode !== 'ios' ? 'call' : null,
             handler: () => {
               window.open('tel:' + jobOwner.phoneNumber);

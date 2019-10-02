@@ -67,10 +67,19 @@ page-dashboard {
         font-size: 1.8rem !important;
       }
 
+      h6 {
+        font-size: 1.6rem !important;
+      }
+
       ion-row {
         ion-col[float-right] {
           h3 {
             float: right !important;
+          }
+
+          .category {
+            font-weight: bolder;
+            color: black !important;
           }
         }
       }

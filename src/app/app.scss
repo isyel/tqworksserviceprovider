@@ -84,7 +84,7 @@
  
 
 #loggedInMenu ion-list, #loggedOutMenu ion-list {
-  margin: -1px 0 10px;
+  margin: -1px 7px -5px 0px;
   background-color: white;
 }
 
@@ -97,12 +97,13 @@ button[side-menu] {
   border-bottom-right-radius: 30px !important;
 }
 
-button.active {
+button[side-menu].active {
   ion-icon {
-    color: white !important;
+    color: rgb(3, 86, 191) !important;
+    font-weight: bolder !important;
   }
-  background-color: #618fca !important;
-  color: white !important;
+  color: rgb(3, 86, 191);
+  background-color: rgba(52, 101, 164, 0.259);
   font-weight: bold;
 }
 

@@ -27,7 +27,7 @@
         </ion-list-header>-->
         <br/>
         <button ion-item no-lines menuClose side-menu *ngFor="let p of appPages" (click)="openPage(p)" 
-          [class.active]="checkActivePage(p)" [color]="isActive(p)">
+          [class.active]="checkActivePage(p) || isActive(p)" >
           <ion-icon item-start [name]="p.icon" ></ion-icon>
           {{p.title}}
         </button>
@@ -37,11 +37,6 @@
         <button ion-item no-lines menuClose (click)="getURL('ArtisanFAQUrl')" class="bold-font">
           <ion-icon item-start name="help-circle-outline" ></ion-icon>
           FAQ
-        </button>
-        <button ion-item no-lines menuClose side-menu *ngFor="let p of loggedInPages" [class.active]="checkActivePage(p)"
-          (click)="openPage(p)" class="bold-font">
-          <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
-          {{p.title}}
         </button>
       </ion-list>
 

@@ -47,6 +47,7 @@ export class JobDetailPage {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.TEST = true;
     this._userData.getProviderData().then((providerData) => {
       this.providerData = providerData;
@@ -64,7 +65,6 @@ export class JobDetailPage {
     this._serviceRequestService.getOne(currentJobAlertId).subscribe(
       (result) => {
         this.job = result;
-        console.log("ServiceRequest: ", this.job);
         if (this.job.serviceCategory == null)
           this.getServiceCategoryDetails(this.job.serviceCategoryId);
         this.getProjectQuote(this.job.id);
@@ -73,7 +73,6 @@ export class JobDetailPage {
         } else {
           this.jobAlertUser = this.job.user;
         }
-        this.loading = false;
       },
       error => {
         console.log(error);

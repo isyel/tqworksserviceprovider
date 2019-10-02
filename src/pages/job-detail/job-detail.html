@@ -9,20 +9,30 @@
   </ion-refresher>
   <div *ngIf="job">
     <ion-card margin-vertical padding-top class="main-card rounded-bottom no-rounded-top">
-      <ion-card-content padding-top>
+      <ion-card-content padding-top margin-top  *ngIf="!loading && !job.serviceProviderId">
+        <div padding>
+          <h2 class="category" text-center>
+            <strong>Job Request details not Available</strong>
+          </h2>
+        </div>
+
+      </ion-card-content>
+      <ion-card-content padding-top *ngIf="job.serviceProviderId != null">
         <div padding-top>
-          <h2 class="category"><strong>{{job.serviceCategory.name}} Request</strong></h2>
+          <h2 class="category"><strong>{{job.serviceCategory?.name}} Request</strong></h2>
           <p>{{job.description}}</p>
         </div>
         <ion-row>
           <ion-col>
             <h5>Status</h5>
             <span 
-              class="{{((showProjectStatus(job.status) == 'On Going') || (showProjectStatus(job.status) == 'Completed')
-              || (showProjectStatus(job.status) == 'Closed')) && job.isApproved ? 'green-span' : 'orange-span'}}">
+              class="{{((showProjectStatus(job.status) == 'On Going') || 
+              (showProjectStatus(job.status) == 'Completed')
+              || (showProjectStatus(job.status) == 'Closed')) ? 'green-span' : 
+              (((showProjectStatus(job.status) == 'Awaiting Completion') || 
+                (showProjectStatus(job.status) == 'Pending')) ? 'orange-span' : 'red-span')}}">
               {{showProjectStatus(job.status)}}
             </span>
-            
           </ion-col>
         </ion-row>
         <ion-row *ngIf="job.serviceProviderId != null" padding-bottom>
@@ -32,7 +42,7 @@
           </ion-col>
         </ion-row>
 
-        <div *ngIf="(job.commitmentFeeDebited && !job.fullPaymentDebited) && 
+        <div *ngIf="job.commitmentFeeDebited && !job.fullPaymentDebited && 
           (showProjectStatus(job.status) != 'Cancelled')">
           <h3 *ngIf="jobAlertUser">Client</h3>
           <ion-card no-margin class="rounded-bottom">
@@ -58,9 +68,6 @@
                     <button ion-button clear color="primary" icon-start (click)="callClient(jobAlertUser.phoneNumber)">
                       <ion-icon name='call'></ion-icon>
                     </button>
-                    <!-- <button ion-button clear color="primary" icon-start (click)="goToMail(jobAlertUser.email)">
-                      <ion-icon name='mail'></ion-icon>
-                    </button> -->
                     <button ion-button clear color="primary" icon-start (click)="goToChatPage(jobAlertUser.phoneNumber)">
                       <ion-icon name='text'></ion-icon>
                     </button>
@@ -134,12 +141,6 @@
       <span class="green-span">Project Accepted</span>
       <p>Awaiting Commitment Fee Payment From Client</p>
     </div>
-
-    <div *ngIf="job.serviceProviderId == null" text-center padding margin>
-      <span class="red-span">You Rejected This Job</span>
-    </div>
-
-    
   </div>
 </ion-content>
 

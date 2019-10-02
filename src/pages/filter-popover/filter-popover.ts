@@ -12,11 +12,11 @@ import { ProjectStatusEnum } from '../../enum/ProjectStatusEnum';
         <button ion-item (click)="filterProjects(all)">
         <ion-icon name='list' color='primary' item-start></ion-icon> All</button>
         <button ion-item (click)="filterProjects(pending)">
-        <ion-icon name='timer' color='danger' item-start></ion-icon> Pending</button>
+        <ion-icon name='timer' color='pending' item-start></ion-icon> Pending</button>
         <button ion-item (click)="filterProjects(ongoing)">
-        <ion-icon name='refresh' color='primary' item-start></ion-icon> On Going</button>
+        <ion-icon name='refresh' color='secondary' item-start></ion-icon> On Going</button>
         <button ion-item (click)="filterProjects(awaitingCompletion)">
-        <ion-icon name='checkmark-circle-outline' color='secondary' item-start></ion-icon> Awaiting Completion</button>
+        <ion-icon name='checkmark-circle-outline' color='pending' item-start></ion-icon> Awaiting Completion</button>
         <button ion-item (click)="filterProjects(completed)">
         <ion-icon name='done-all' color='secondary' item-start></ion-icon> Completed</button>
         <button ion-item (click)="filterProjects(cancelled)">

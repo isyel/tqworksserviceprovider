@@ -12,7 +12,7 @@
 <ion-content class="job-detail">
   <div text-center *ngIf="jobOwner" padding-top>
     <img [src]="jobOwner.profilePhoto ? jobOwner.profilePhoto : 'assets/img/customimages/no_avatar.svg'" 
-      [alt]="jobOwner.firstName" imageViewer><br>
+      [alt]="jobOwner.firstName" imageViewer onerror="this.src='assets/img/customimages/no_avatar.svg'"><br>
 
     <h3>{{jobOwner.firstName}} {{jobOwner.lastName}}</h3>
     <p>{{jobOwner?.isActive ? 'Available' : 'Unavailable'}}</p>

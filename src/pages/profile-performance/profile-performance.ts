@@ -49,7 +49,7 @@ export class ProfilePerformancePage {
       this.providerData = providerData;
       this.setServiceProviderDetails();
       if(this.segmentView == 'two') {
-        this.getReviews();
+        this.updateOfflineReviews();
       }
     });
   }
@@ -80,13 +80,27 @@ export class ProfilePerformancePage {
     });
   }
 
+  updateOfflineReviews() {
+    this.loading = true;
+    this._userData.getSavedReviews().then((reviews) => {
+      console.log('Reviews : ', reviews);
+        if (reviews != null && reviews.length > 0) {
+          console.log('Reviews exist');
+          this.ratings = reviews;
+        } 
+        //this.getReviews();
+      });
+  }
+
   getReviews() {
     this.loading = true;
-    this._reviewsService.getAll(this.providerData.id, RatingTypeEnum.serviceProvider).subscribe((result) => {
+    this._reviewsService.getAll(this.providerData.id, RatingTypeEnum.serviceProvider).subscribe(
+      (result) => {
         if (result) {
           this.loading = false;
           this.ratings = result.items;
         }
+        this._userData.saveReviews(this.ratings);
         this.calculateAverageRating(this.ratings);
       },
       error => {

@@ -11,18 +11,18 @@ import { ApiService } from '../../app/app.service';
 */
 @Injectable()
 export class MerchantsServiceProvider {
-  _actionUrl: string = 'Merchants/';
+  _actionUrl: string = 'Merchants';
 
   constructor(public http: HttpClient, public _service: ApiService) {
-    console.log('Hello ProvidersServicesMerchantsServiceProvider Provider');
+    console.log('Hello MerchantsServiceProvider Provider');
   }
 
   
   public getMerchantsList(categoryId: number, longitude: number, latitude: number, status: any,
-    seacrhKeyword: string, pageNumber: number, pageSize: number = 10) {
+    seacrhKeyword: string) {
       this._service.actionUrl = this._actionUrl + '?CategoryId=' + categoryId + "&Longitude=" + 
       longitude + "&Latitude=" + latitude + "&Status=" + status + "&SearchKeyword=" + 
-      seacrhKeyword + "&PageNumber=" + pageNumber + "&PageSize=" + pageSize;
+      seacrhKeyword;
       return this._service.getAll<MerchantModel[]>();
   }
 

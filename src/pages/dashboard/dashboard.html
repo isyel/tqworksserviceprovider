@@ -23,7 +23,7 @@
 </ion-header>
 
 <ion-content no-padding>
-  <ion-row padding class="banner rounded-bottom" *ngIf="userData">
+  <ion-row padding class="banner rounded-bottom" *ngIf="providerData">
     <ion-col col-3 >
       <a (click)="goToPerformancePage()" *ngIf="providerData">
         <ion-avatar class="avatar">
@@ -54,7 +54,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div *ngIf="userData">
+  <div *ngIf="providerData">
     <ion-row *ngIf="jobAlert">
       <ion-col no-padding *ngIf="!jobAlert.accepted">
         <a (click)="goToJobsPage()">
@@ -89,7 +89,7 @@
                 <ion-col *ngIf="!loading && !activeJob" text-center>
                   <h2><strong>No Active Project</strong></h2><br>
                 </ion-col>
-                <ion-col *ngIf="activeJob" text-center>
+                <ion-col *ngIf="activeJob">
                   <a  (click)="goToDetailsPage(activeJob)">
                     <ion-row>
                       <ion-col item-left>
@@ -99,22 +99,28 @@
                       </ion-col>
                       <ion-col col-auto>
                         <div text-right>
-                          <span class="{{activeJob.isApproved ? 'green-span' : 'orange-span'}}">
-                              {{showProjectStatus(activeJob.status)}}
+                          <span 
+                            class="{{((showProjectStatus(activeJob.status) == 'On Going') || 
+                            (showProjectStatus(activeJob.status) == 'Completed')
+                            || (showProjectStatus(activeJob.status) == 'Closed')) ? 'green-span' : 
+                            (((showProjectStatus(activeJob.status) == 'Awaiting Completion') || 
+                              (showProjectStatus(activeJob.status) == 'Pending')) ? 'orange-span' : 'red-span')}}">
+                            {{showProjectStatus(activeJob.status)}}
                           </span>
                         </div>
                       </ion-col>
                     </ion-row>
+                    <div>
+                      <h6>
+                        <strong>{{activeJob.serviceCategory.name}} request</strong>
+                      </h6>
+                    </div>
                     <ion-row>
-                      <ion-col text-left>
-                        <p class='job-details'>
-                          {{activeJob.description | slice: 0 : 35}}[..]<br>
+                      <ion-col>
+                        <p>
+                          {{activeJob.description | slice: 0 : 50}} 
+                          {{activeJob.description > 50 ? '[..]' : ''}}<br>
                         </p>
-                      </ion-col>
-                      <ion-col col-5>
-                        <div text-right>
-                          {{activeJob.serviceCategory.name}}
-                        </div>
                       </ion-col>
                     </ion-row>
                   </a>

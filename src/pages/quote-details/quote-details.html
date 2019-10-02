@@ -31,7 +31,15 @@
           </ion-col>
         </ion-row>
       </ion-card-header>
-      <ion-card-content>
+      <ion-card-content padding-top margin-top  *ngIf="!loading && quote.labourCost == null">
+        <div padding>
+          <h2 class="category" text-center>
+            <strong>Sorry, Quote Details not Available at the moment</strong>
+          </h2>
+        </div>
+
+      </ion-card-content>
+      <ion-card-content *ngIf="quote.labourCost != null">
         <div *ngIf="quote.isRejected && quote.rejectedReason">
           <h5 class="red-text">Reason for rejection</h5>
           <p>{{quote.rejectedReason}}</p>
@@ -70,7 +78,7 @@
           </ion-list>
         </div>
         <div padding-vertical *ngIf="quote.quoteItems == null || quote.quoteItems.length == 0">
-          <h5><strong>No Items For This Quote</strong></h5>
+          <h2><strong>No Items For This Quote</strong></h2>
         </div>
         <div>
           <div text-right>
@@ -82,7 +90,7 @@
             <h1><strong>&#8358;{{subTotal}}</strong></h1>
           </div>
         </div>
-        <div *ngIf="quote.note != ''">
+        <div *ngIf="quote.note">
           <h3 padding-horizontal>Note</h3>
           <ion-card class="rounded-bottom">
             <ion-card-content>
@@ -96,7 +104,7 @@
       </ion-card-content>
     </ion-card>
 
-    <div padding-vertical margin-vertical>
+    <div padding-vertical margin-vertical *ngIf="quote.labourCost">
       <h3 padding-horizontal>Merchants</h3>
       <div *ngIf="loading && !merchantsList" text-center>
         <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
@@ -108,9 +116,11 @@
         </ion-card-content>
       </ion-card>
       <div align-items-center text-center *ngIf="!loading && merchantsList">
+        <h5>{{merchantsList.length}} merchants available</h5>
         <button ion-button outline text-center color="primary" icon-start 
           (click)="goToMerchantsPage()" round>
           <ion-icon name='cart'></ion-icon> Show Available Merchants
+          <ion-icon name='arrow-forward' item-end></ion-icon> Show Available Merchants
         </button>
       </div>
 

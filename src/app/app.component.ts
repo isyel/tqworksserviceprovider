@@ -51,12 +51,10 @@ export class TQWorksServiceProviderApp {
   // the login page disables the left menu
   appPages: PageInterface[] = [
     { title: 'Home', name: 'TabsPage', component: DashboardPage, tabComponent: DashboardPage, 
-      index: 0, icon: 'home-outline'},
+      icon: 'home-outline'},
     { title: 'Quotes', name: 'QuotesAndInvoices', component: QuotesAndInvoicesPage, icon: 'list-box-outline' },
-    { title: 'Settings', name: 'Settings', component: SettingsPage, icon: 'settings-outline' }
-  ];
-  loggedInPages: PageInterface[] = [
-    { title: 'About', name: 'About', component: AboutPage, icon: 'information-circle-outline' },
+    { title: 'Settings', name: 'Settings', component: SettingsPage, icon: 'settings-outline' },
+    { title: 'About', name: 'About', component: AboutPage, icon: 'information-circle-outline' }
   ];
   loggedOutPages: PageInterface[] = [
     { title: 'Login', name: 'LoginPage', component: LoginPage, icon: 'log-in-outline' },
@@ -80,7 +78,6 @@ export class TQWorksServiceProviderApp {
     // statusBar.overlaysWebView();
     this.storage.get('hasSeenTutorial')
       .then((hasSeenTutorial) => {
-        console.log("in has seen tutorial");
         if (!hasSeenTutorial) {
           this.rootPage = TutorialPage;
         } else {
@@ -129,7 +126,7 @@ export class TQWorksServiceProviderApp {
     this.activePage = page;
   }
 
-  public checkActivePage(page): boolean{
+  public checkActivePage(page): boolean {
     return page === this.activePage;
   }
 
@@ -179,7 +176,6 @@ export class TQWorksServiceProviderApp {
   }
 
   goToNotificationDetails(notificationType, requestId) {
-    console.log("notificationType", notificationType, "requestId", requestId);
     switch (+notificationType) {
       case NotificationTypeEnum.project:
         this.nav.setRoot(JobDetailPage, { jobDetails: {id: requestId}, fromNotifications: true});
@@ -244,7 +240,6 @@ export class TQWorksServiceProviderApp {
             if (this.platform.is('ios')) {
               messageText = notification.aps.alert;
             }
-            console.log('notification data', notification);
             this.updateProviderDetails();
             this.goToNotificationDetails(notification.notificationType, notification.requestId);
             this._common.showToast(messageText);
@@ -276,13 +271,13 @@ export class TQWorksServiceProviderApp {
     // Tabs are a special case because they have their own navigation
     if (childNav) {
       if (childNav.getSelected() && childNav.getSelected().root === page.tabComponent) {
-        return 'menu-active';
+        return page.title == 'Home' ? true : false;
       }
       return;
     }
 
     if (this.nav.getActive() && this.nav.getActive().name === page.name) {
-      return 'menu-active';
+      return page.title == 'Home' ? true : false;
     }
     return;
   }
@@ -290,7 +285,6 @@ export class TQWorksServiceProviderApp {
   getURL(settingsKey) {
     this._userService.getSettingsByKey(settingsKey).subscribe(
       (result) => {
-        console.log("result.value : ", result.value);
         this.openFaqPage(result.value);
       },
       error => {

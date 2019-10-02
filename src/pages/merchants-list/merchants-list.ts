@@ -8,7 +8,6 @@ import { Common } from '../../app/app.common';
 import { ServiceRequestQuoteModel } from '../../models/service-request-quote-model';
 import { MerchantsServiceProvider } from '../../providers/services/merchants-service';
 import { ServiceRequestModel } from '../../models/service-request-model';
-import { AccountStatusEnum } from '../../enum/AccountStatusEnum';
 import { ServiceRequestService } from '../../providers/services/service-request-service';
 
 /**
@@ -27,7 +26,6 @@ export class MerchantsListPage {
   userDetails: UserModel;
   merchantsList: MerchantModel[];
   serviceRequest: ServiceRequestModel;
-  searchKeyword: string;
   loading: boolean;
   pageNumber: number = 0;
   perPage: number = 20;
@@ -41,9 +39,9 @@ export class MerchantsListPage {
 
   ngOnInit() {
     this.quote = this.navParams.data.quote;
+    this.merchantsList = this.navParams.data.merchantsList;
     if(this.quote.serviceRequest != null) {
       this.serviceRequest = this.quote.serviceRequest;
-      this.getMerchantsList();
     } else {
       this.getServiceRequest();
     }
@@ -58,26 +56,10 @@ export class MerchantsListPage {
     console.log('ionViewDidLoad MerchantsListPage');
   }
 
-  getMerchantsList() {
-    this.loading = true;
-    this._merchantsService.getMerchantsList(this.serviceRequest.serviceCategoryId, this.serviceRequest.longitude, 
-      this.serviceRequest.latitude, AccountStatusEnum.active, this.searchKeyword, this.pageNumber).subscribe((result) => {
-        this.merchantsList = result;
-        this.loading = false;
-      },
-      error => {
-        this.loading = false;
-        console.log(error);
-      },
-      () => {
-      });
-  }
-
   getServiceRequest() {
     this.loading = true;
     this._serviceRequest.getOne(this.quote.serviceRequestId).subscribe((result) => {
         this.serviceRequest = result;
-        this.getMerchantsList();
         this.loading = false;
       },
       error => {
