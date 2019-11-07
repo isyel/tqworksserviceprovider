@@ -9,6 +9,7 @@ import { MerchantsServiceProvider } from '../../providers/services/merchants-ser
 import { AccountStatusEnum } from '../../enum/AccountStatusEnum';
 import { MerchantModel } from '../../models/merchantModel';
 import { ServiceRequestService } from '../../providers/services/service-request-service';
+import { ItemModel } from '../../models/item-model';
 
 /**
  * Generated class for the QuoteDetailsPage page.
@@ -28,7 +29,6 @@ export class QuoteDetailsPage {
   jobStatus: number;
   projectStatus = ProjectStatusEnum;
   loading: boolean;
-  searchKeyword: string;
   merchantsList: MerchantModel[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController,
@@ -47,7 +47,7 @@ export class QuoteDetailsPage {
     if(this.quote != undefined && this.quote.quoteItems != null) {
       this.totalItemsCost = this.quote.quoteItems.reduce((sum, item) => sum + item.totalAmount, 0);
       this.subTotal = this.totalItemsCost + this.quote.transportation + this.quote.labourCost;
-      this.quote.serviceRequest == null ? this.getServiceRequest() : this.getMerchantsList();
+      this.quote.serviceRequest == null ? this.getServiceRequest() : '';
     } else {
       this.getProjectQuote(this.quote.serviceRequestId);
     }
@@ -68,7 +68,7 @@ export class QuoteDetailsPage {
         }
         else {
           this.quote = result;
-          this.quote.serviceRequest == null ? this.getServiceRequest() : this.getMerchantsList();
+          this.quote.serviceRequest == null ? this.getServiceRequest() : "";
           if(this.quote.quoteItems != null) {
             this.totalItemsCost = this.quote.quoteItems.reduce((sum, item) => sum + item.totalAmount, 0);
           }
@@ -88,7 +88,6 @@ export class QuoteDetailsPage {
     this.loading = true;
     this._serviceRequest.getOne(this.quote.serviceRequestId).subscribe((result) => {
         this.quote.serviceRequest = result;
-        this.getMerchantsList();
         this.loading = false;
       },
       error => {
@@ -99,28 +98,12 @@ export class QuoteDetailsPage {
       });
   }
 
-  getMerchantsList() {
-    this.loading = true;
-    this._merchantsService.getMerchantsList(this.quote.serviceRequest.serviceCategoryId, this.quote.serviceRequest.longitude, 
-      this.quote.serviceRequest.latitude, AccountStatusEnum.active, this.searchKeyword).subscribe((result) => {
-        this.merchantsList = result;
-        this.loading = false;
-      },
-      error => {
-        this.loading = false;
-        console.log(error);
-      },
-      () => {
-      });
-  }
-
-  goToMerchantsPage() {
-    this.navCtrl.push(MerchantsListPage, { quote: this.quote});
+  goToMerchantsPage(item: any) {
+    this.navCtrl.push(MerchantsListPage, { item: {itemDetails: item, itemQuantity: item.quantity}, quote: this.quote},);
   }
 
   doRefresh(refresher: Refresher) {
     this.getProjectQuote(this.quote.serviceRequestId);
-
     refresher.complete();
   }
 }

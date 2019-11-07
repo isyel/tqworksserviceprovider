@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-toolbar>
-    <ion-title>Merchant Name</ion-title>
+    <ion-title>{{merchant.businessName}}</ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
         <span ion-text color="light" showWhen="ios">Cancel</span>
@@ -31,7 +31,7 @@
   <div *ngIf="segment === 'all'">
     <div *ngIf="loading && items.length == 0" text-center>
       <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
-      <div align="center">Loading Items...</div>
+      <div text-center>Loading Items...</div>
     </div>
     <div *ngIf="items && items.length > 0">
       <ion-item no-padding *ngFor="let item of items" [ngClass]="{'active': item.added }" 
@@ -45,7 +45,7 @@
   <div *ngIf="segment === 'search'">
     <div *ngIf="loading && searchResults.length == 0" text-center>
       <img class="over-image" src="assets/img/loading/Eclipse-1s-200px.gif" alt="avatar">
-      <div align="center">Loading Items...</div>
+      <div text-center>Loading Items...</div>
     </div>
     <div *ngIf="searchResults && searchResults.length > 0">
       <ion-item no-padding *ngFor="let item of searchResults" [ngClass]="{'active': item.added }" 
@@ -55,8 +55,6 @@
       </ion-item>
     </div>
   </div>
-  
-
 </ion-content>
 
 <ion-footer *ngIf="purchasedItemList.length > 0">

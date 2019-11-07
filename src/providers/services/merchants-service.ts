@@ -19,11 +19,16 @@ export class MerchantsServiceProvider {
 
   
   public getMerchantsList(categoryId: number, longitude: number, latitude: number, status: any,
-    seacrhKeyword: string) {
+    seacrhKeyword: string): any{
       this._service.actionUrl = this._actionUrl + '?CategoryId=' + categoryId + "&Longitude=" + 
       longitude + "&Latitude=" + latitude + "&Status=" + status + "&SearchKeyword=" + 
       seacrhKeyword;
-      return this._service.getAll<MerchantModel[]>();
+      return this._service.getAll<any>();
+  }
+
+  public purchaseProdoucts(credentials: any): any{
+      this._service.actionUrl = this._actionUrl + '/PurchaseProducts'
+      return this._service.getAll<any>();
   }
 
 }

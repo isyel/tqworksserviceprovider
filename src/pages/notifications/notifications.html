@@ -24,17 +24,17 @@
     class="notification" *ngFor="let notification of notifications">
       <div class="{{!notification.seen ? 'not-seen' : 'seen'}}">
         <ion-item no-lines>
-            <ion-avatar item-start text-center>
-              <ion-icon name="{{getTypeImage(notification.type)}}"></ion-icon>
-            </ion-avatar>
-            <h5>{{notification.title}}</h5>
-            <p>
-              <strong *ngIf="!notification.seen">{{notification.message}}</strong>
-              <span *ngIf="notification.seen">{{notification.message}}</span>
-              <br>
-              <span margin-top class="time-text">{{notification.createdDate | relativeTime}}</span>
-            </p>
-          </ion-item>
+          <ion-avatar item-start text-center>
+            <ion-icon name="{{getTypeImage(notification.type)}}"></ion-icon>
+          </ion-avatar>
+          <h5>{{notification.title}}</h5>
+          <p>
+            <strong *ngIf="!notification.seen">{{notification.message}}</strong>
+            <span *ngIf="notification.seen">{{notification.message}}</span>
+            <br>
+            <span margin-top class="time-text">{{notification.createdDate | relativeTime}}</span>
+          </p>
+        </ion-item>
       </div>
     </a>
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)" >

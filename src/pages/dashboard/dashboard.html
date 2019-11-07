@@ -57,20 +57,18 @@
   <div *ngIf="providerData">
     <ion-row *ngIf="jobAlert">
       <ion-col no-padding *ngIf="!jobAlert.accepted">
-        <a (click)="goToJobsPage()">
-          <ion-card padding no-padding >
-            <ion-card-content text-center no-padding>
-              <ion-row>
-                <ion-col>
-                  <h3><strong>Notifications</strong></h3><br>
-                </ion-col>
-              </ion-row>
-              <h3 class="alert">
-                <ion-icon name="information-circle"></ion-icon> {{(jobAlert) ? "You Have A New" : "No"}} Job Alert
-              </h3>
-            </ion-card-content>
-          </ion-card>
-        </a>
+        <ion-card padding no-padding tappable (click)="goToJobsPage()">
+          <ion-card-content text-center no-padding>
+            <ion-row>
+              <ion-col>
+                <h3><strong>Notifications</strong></h3><br>
+              </ion-col>
+            </ion-row>
+            <h3 class="alert">
+              <ion-icon name="information-circle"></ion-icon> {{(jobAlert) ? "You Have A New" : "No"}} Job Alert
+            </h3>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -146,15 +144,10 @@
     <ion-card >
       <ion-card-content *ngIf="recentActivities.length == 0">
         <div class="activity-post">
-          <ion-row>
-            <ion-col col-auto>
-              <h3 *ngIf="providerData"><ion-icon name="pin"></ion-icon> {{providerData.workLocation | slice:0:20}}...</h3>
-            </ion-col>
-            <ion-col text-right>
-              <h3>Mon, 28 June</h3>
-            </ion-col>
-          </ion-row>
-          <p padding-vertical>Your In-App activities such as accepting a job, submitting a quote and completing a job would appear here</p>
+          <p padding-vertical>
+            Your In-App activities such as accepting a job, 
+            submitting a quote and completing a job would appear here
+          </p>
         </div>
       </ion-card-content>
       <ion-card-content  class='recent' *ngFor="let recentActivity of recentActivities">
