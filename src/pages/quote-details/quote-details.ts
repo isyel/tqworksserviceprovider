@@ -6,10 +6,8 @@ import { QuotesService } from '../../providers/services/quotes-service';
 import { ProjectStatusEnum } from '../../enum/ProjectStatusEnum';
 import { MerchantsListPage } from '../merchants-list/merchants-list';
 import { MerchantsServiceProvider } from '../../providers/services/merchants-service';
-import { AccountStatusEnum } from '../../enum/AccountStatusEnum';
 import { MerchantModel } from '../../models/merchantModel';
 import { ServiceRequestService } from '../../providers/services/service-request-service';
-import { ItemModel } from '../../models/item-model';
 
 /**
  * Generated class for the QuoteDetailsPage page.

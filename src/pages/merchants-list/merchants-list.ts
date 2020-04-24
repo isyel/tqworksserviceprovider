@@ -3,7 +3,6 @@ import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { MerchantModel } from '../../models/merchantModel';
 import { UserData } from '../../providers/user-data';
 import { UserModel } from '../../models/user-model';
-import { MerchantsItemsListModalPage } from '../merchants-items-list-modal/merchants-items-list-modal';
 import { Common } from '../../app/app.common';
 import { ServiceRequestQuoteModel } from '../../models/service-request-quote-model';
 import { MerchantsServiceProvider } from '../../providers/services/merchants-service';

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MerchantModel } from '../../models/merchantModel';
 import { ApiService } from '../../app/app.service';
 
 /*
