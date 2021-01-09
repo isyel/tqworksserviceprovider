@@ -14,7 +14,7 @@ export class ApiService {
     //public _configuration: Configuration;
 
     constructor(public http: HttpClient, public _configuration: Configuration) {
-        this.baseUrl = this._configuration.ApiUrl;
+        this.baseUrl = this._configuration.devApiUrl;
     }
 
     public getAll<T>(): Observable<T> {

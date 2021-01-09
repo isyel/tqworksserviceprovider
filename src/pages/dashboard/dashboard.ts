@@ -46,33 +46,29 @@ export class DashboardPage {
   }
 
   ngOnInit() {
-    this.loading = false;
+    this.loading = true;
     this.recentActivities = [];
     this.getNotifications();
+  }
+
+  ionViewDidEnter() {
     this._userData.getProviderData().then((providerData) => {
       this.providerData = providerData;
+      this.updateProviderDetails(this.providerData.id);
       this.availabilityText = this.showAvailability(this.providerData.availability);
     });
   }
 
-  ionViewDidEnter() {
-    if (this.userData == null) {
-      this._userData.getUserData().then((user) => {
-        this.userData = user;
-        this.updateProviderDetails(this.userData.id);
-      });
-    } else {
-      this.updateProviderDetails(this.userData.id);
-    }
-  }
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad DashboardPage');
+    this._userData.getActiveJob().then((activeJob) => {
+      activeJob == null ? console.log("No active job Offline") : this.activeJob = activeJob;
+    });
     this.getRecentActivities();
   }
 
   updateProviderDetails(userId) {
-    this._userService.getProvider(userId).subscribe((result) => {
+    this._userService.getProviderById(userId).subscribe((result) => {
         this.providerData = result;
         this.availabilityText = this.showAvailability(this.providerData.availability);
         this._userData.saveProvider(this.providerData).then(() => {
@@ -146,7 +142,6 @@ export class DashboardPage {
       this._serviceRequest.getJobAlert(this.providerData.id).subscribe(
         (result) => {
           if (!result || result.data == null) {
-            console.log('You Have No Job Alert');
             this.jobAlert = false;
           }
           else if (result.data.serviceRequest.status == ProjectStatusEnum.cancelled || 
@@ -155,8 +150,6 @@ export class DashboardPage {
           } else {
             this.jobAlert = true;
             this.currentJobAlert = result.data.serviceRequest;
-            console.log('currentJobAlert: ', this.currentJobAlert);
-            this._common.showToast('You Have A New Job Alert');
           }
         },
         error => {
@@ -176,15 +169,12 @@ export class DashboardPage {
     this.loading = true;
     this._serviceRequest.getByProvider(this.providerData.id).subscribe((result) => {
       if (result != null) {
-        let projectHistory = result.items;
-        for(let project of projectHistory) {
-          if (project.accepted && 
-            (project.status == ProjectStatusEnum.ongoing || project.status == ProjectStatusEnum.awaitingCompletion || 
-              project.status == ProjectStatusEnum.pending)) {
-            this.activeJob = project;
-            break;
-          }
-        }
+        this.activeJob = result.items.find((project) => 
+          project.accepted && 
+          (project.status == ProjectStatusEnum.ongoing || project.status == ProjectStatusEnum.awaitingCompletion || 
+            project.status == ProjectStatusEnum.pending)
+        );
+        this._userData.saveActiveJob(this.activeJob);
         this.loading = false;
       }
     },

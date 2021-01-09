@@ -9,6 +9,7 @@ import {ServiceRequestQuoteModel} from "../models/service-request-quote-model";
 import { WalletHistoryModel, WalletBalanceModel } from '../models/wallet-model';
 import { NotificationModel } from '../models/notification-model';
 import { RecentActivitiesModel } from '../models/recent-activities-model';
+import { RatingModel } from '../models/rating-model';
 
 
 @Injectable()
@@ -179,19 +180,22 @@ export class UserData {
     return value;
   };
 
-  hasFavorite(sessionName: string): boolean {
-    return (this._favorites.indexOf(sessionName) > -1);
+  saveActiveJob(activeJob: ServiceRequestModel): void {
+    this.storage.set('activeJob', activeJob);
   };
 
-  addFavorite(sessionName: string): void {
-    this._favorites.push(sessionName);
+  async getActiveJob(): Promise<ServiceRequestModel>  {
+    const value = await this.storage.get('activeJob');
+    return value;
   };
 
-  removeFavorite(sessionName: string): void {
-    let index = this._favorites.indexOf(sessionName);
-    if (index > -1) {
-      this._favorites.splice(index, 1);
-    }
+  saveReviews(reviews: RatingModel[]): void {
+    this.storage.set('reviews', reviews);
+  };
+
+  async getSavedReviews(): Promise<RatingModel[]>  {
+    const value = await this.storage.get('reviews');
+    return value;
   };
 
   login(): void {

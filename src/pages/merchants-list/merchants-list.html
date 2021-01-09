@@ -5,19 +5,65 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>Avaliable Merchants</ion-title>
+    <ion-title>Available Merchants</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content>    
-    <ion-card tappable *ngFor="let merchant of [2,3,5,6]" (click)="presentProductListModal(2)">
-      <ion-card-content>
-         <h5>Merchant {{merchant}}</h5> 
-         <p>Address Address</p>
-         <p><strong>0802223352{{merchant}}</strong></p>
-      </ion-card-content>
-    </ion-card>
+  <h2 text-center>{{item.item.name}} | x{{itemQuantity}}</h2>
+  <ion-card tappable *ngFor="let merchant of merchantsList" (click)="purchaseProduct(merchant)">
+    <ion-card-content>
+      <ion-row>
+        <ion-col text-left>
+          <h5><strong>{{merchant.businessName}}</strong></h5>
+        </ion-col>
+        <ion-col text-right>
+          <p>{{merchant.businessPhoneNumber}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col text-left>
+          Unit Price<br/>
+          <strong>&#8358;{{merchant.item.price}}</strong>
+        </ion-col>
+        <ion-col>
+          Total Price<br/>
+          <strong>&#8358;{{merchant.item.price * itemQuantity}}</strong>
+        </ion-col>
+      </ion-row>
+      <div text-right>
+        <button ion-button rounded color="primary">Buy Here</button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-card tappable *ngFor="let price of [550,600,520,500]; let merchant = index">
+    <ion-card-content>
+      <ion-row>
+        <ion-col text-left>
+          <h5>Merchant {{merchant}}</h5>
+        </ion-col>
+        <ion-col text-right>
+          <p>080333568523</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col text-left>
+          Unit Price<br/>
+          <strong>&#8358;{{price}}</strong>
+        </ion-col>
+        <ion-col>
+          Total Price<br/>
+          <strong>&#8358;{{price * itemQuantity}}</strong>
+        </ion-col>
+        <ion-col text-right>
+          <button ion-button rounded small color="primary" (click)="purchaseProduct(2)">Buy Here</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <div class="dummy" *ngIf="!loading && (!merchantsList || merchantsList.length == 0)" text-center>
+    <ion-icon name="cart" ></ion-icon>
+    <p>There are no available merchants for this item</p>
+  </div>
 </ion-content>

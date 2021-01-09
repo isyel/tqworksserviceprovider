@@ -8,8 +8,9 @@ export interface QuoteOptions {
   serviceProviderId: number;
   labourCost: number;
   transportation: number;
-  itemTotalAmount: number;
+  itemsTotalAmount: number;
   processingFee: number;
+  providerPayableBalance: number;
   totalAmount: number;
   differential: number;
   note: string;

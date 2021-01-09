@@ -99,9 +99,9 @@ export class QuotesAndInvoicesPage {
     } 
     setTimeout(() => {
       let index = this.dataIndex;
+      this.allQuotes.push.apply(this.allQuotes, this.tempResult);
       for(let i = index; i < index + this.perPage; i++) {
         if(i < this.tempResult.length) {
-          this.allQuotes.push(this.tempResult[i]);
           this.processData(this.tempResult[i]);
           this.dataIndex++;
         }

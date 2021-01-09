@@ -47,7 +47,7 @@ export class MerchantsItemsListModalPage {
 
   getAllItems() {
     console.log("In getAllItems");
-    this._quotesService.getAllItems().subscribe((result) => {
+    this._quotesService.getAllMerchantItems(this.merchant.id).subscribe((result) => {
         if (result) {
           this.items = result.items;
           console.log("Items Data: ", result);

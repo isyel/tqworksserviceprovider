@@ -41,7 +41,12 @@
                     [(ngModel)]="userReview.comment" #review_note="ngModel"></ion-textarea>
     </ion-item>
     <ion-item no-lines>
-      <button ion-item color="primary" rounded (click)="submitUserRatings(rateClient)" text-center>Submit Review</button>
+      <button ion-item color="primary" ouline rounded (click)="dismiss()" text-center>
+        Dismiss
+      </button>
+      <button ion-item color="primary" rounded (click)="submitUserRatings(rateClient)" text-center>
+        Submit Review
+      </button>
     </ion-item>
   </form>
 

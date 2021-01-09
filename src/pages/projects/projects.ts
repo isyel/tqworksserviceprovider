@@ -79,18 +79,11 @@ export class ProjectsPage {
   updateOfflineJobsHistory() {
     this.loading = true;
     this._userData.getOfflineProjectData().then((result) => {
-        if (result) {
-          if (result.length == 0) {
-            this.updateJobsHistory();
-          }
-          else {
-            this.loading = false;
-            this.projectHistory = result;
-            this.tempProjectHistory = this.projectHistory;
-          }
-        }
-        this.updateJobsHistory();
-      });
+      this.loading = false;
+      this.projectHistory = result;
+      this.tempProjectHistory = this.projectHistory;
+      this.updateJobsHistory();
+    });
   }
 
   searchKeyword() {
@@ -116,13 +109,12 @@ export class ProjectsPage {
     this.pageNumber = 0;
     this._serviceRequest.getByProvider(this.providerData.id, this.queryText, this.pageNumber, this.perPage).subscribe((result) => {
         if (result) {
-          this.projectHistory = [];
-          this.loading = false;
           this.totalData = result.totalCount;
           this.totalPage = result.totalPages;
           this.projectHistory = result.items;
           this.tempProjectHistory = this.projectHistory;
           this._userData.setOfflineProjectData(this.projectHistory);
+          this.loading = false;
         }
       },
       error => {
@@ -166,17 +158,14 @@ export class ProjectsPage {
         else {
           this.totalData = result.totalCount;
           this.totalPage = result.totalPages;
-          for(let i = 0; i < result.items.length; i++) {
-            this.projectHistory.push(result.items[i]);
-          }
+          this.projectHistory.push.apply(this.projectHistory, result.items);
           if(this.pageNumber >= this.totalPage) {
             infiniteScroll.enable(false);
           }
         }
       },
       error => {
-        this.hintText = 'Network or Server Error!';
-        this._common.showToast(this.hintText);
+        this._common.showToast(error);
       });
       infiniteScroll.complete();
     }, 500);

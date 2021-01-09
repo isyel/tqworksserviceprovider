@@ -29,8 +29,8 @@ export class NotificationsPage{
   perPage: number = 15;
   totalData: number;
   totalPage: number;
-  tempResult: any = [];
   userId: number;
+  loading: boolean;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public _userData: UserData,
@@ -38,11 +38,13 @@ export class NotificationsPage{
   }
 
   ngOnInit() {
+    this.loading = true;
     this.updateOfflineNotifications();
   }
 
-  ionViewDidEnter() {
+  ionViewDidLoad() {
     console.log('ionViewDidLoad NotificationsPage');
+    this.loading = true;
     this.getNotifications();
   }
 
@@ -65,9 +67,9 @@ export class NotificationsPage{
     this._userData.getSavedNotifications().then((result) => {
         if (result != null) {
           this.notifications = result;
-          this.tempResult = this.notifications;
+          this.loading = false;
         }
-        this.getNotifications();
+        //this.getNotifications();
       });
   }
 
@@ -89,9 +91,12 @@ export class NotificationsPage{
             this._userData.saveNotifications(this.notifications);
           }
           console.log('first pageNumber : ', this.pageNumber);
+          this.loading = false;
         },
         error => {
           console.log('Notifications Error: ', error.error);
+          this.updateOfflineNotifications();
+          this.loading = false;
         },
         () => {
           // observer.next(success);
@@ -101,30 +106,27 @@ export class NotificationsPage{
   }
 
   doInfinite(infiniteScroll) {
+    infiniteScroll.complete();
     this.pageNumber = this.pageNumber + 1;
     if(this.pageNumber < this.totalPage) {
       infiniteScroll.enable(true);
+    } else if (this.pageNumber >= this.totalPage) {
+      infiniteScroll.enable(false);
     }
     console.log('pageNumber : ', this.pageNumber);
-    this._notificationService.getByUserId(this.userId, this.pageNumber, this.perPage).subscribe((result) => {
-      
-      infiniteScroll.complete();
-      console.log('result : ', result);
-      if (result == null) {
-        this.hintText = 'No More Notifications';
-        this._common.showToast(this.hintText);
-      }
-      else {
-        this.totalData = result.totalCount;
-        this.totalPage = result.totalPages;
-        this.pageNumber = result.pageIndex;
-        for(let i = 0; i < result.items.length; i++) {
-          this.notifications.push(result.items[i]);
+    this._notificationService.getByUserId(this.userId, this.pageNumber, this.perPage).subscribe(
+      (result) => {
+        console.log('result : ', result);
+        if (result == null) {
+          this.hintText = 'No More Notifications';
+          this._common.showToast(this.hintText);
         }
-        if(this.pageNumber >= this.totalPage) {
-          infiniteScroll.enable(false);
-        }
-      }
+        else {
+          this.totalData = result.totalCount;
+          this.totalPage = result.totalPages;
+          this.pageNumber = result.pageIndex;
+          this.notifications.push.apply(this.notifications, result.items);
+        }        
     },
     error => {
       this.hintText = 'Network or Server Error!';
